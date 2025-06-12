@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:todyapp/core/constants/style.dart';
+
+import '../../../../core/constants/styles_app.dart';
 
 class StepSwipeScreen extends StatefulWidget {
   const StepSwipeScreen({super.key});
@@ -26,7 +27,7 @@ class _StepSwipeScreenState extends State<StepSwipeScreen> {
               style: TextStyle(
                 color: Theme.of(context).primaryColor,
                 fontSize: 16,
-                fontWeight: StyleApp.textButtonFontWeight,
+                fontWeight: StylesApp.textButtonFontWeight,
               ),
             ),
           ),
@@ -134,7 +135,7 @@ class _StepSwipeScreenState extends State<StepSwipeScreen> {
                 decoration: BoxDecoration(
                   color: _currentPage == index
                       ? Theme.of(context).primaryColor
-                      : StyleApp.disabled,
+                      : StylesApp.disabled,
                   borderRadius: BorderRadius.circular(5),
                 ),
               ),
