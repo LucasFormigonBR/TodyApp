@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:todyapp/core/constants/styles_app.dart';
 import 'package:todyapp/features/apresentation/presentation/cubit/apresentation_cubit.dart';
 import 'package:todyapp/features/apresentation/presentation/pages/initial_apresentation_page.dart';
 
-import '../../../../core/constants/style.dart';
 import 'apresentation_page.dart';
 
 class ApresentationStructurePage extends StatefulWidget {
@@ -17,13 +17,14 @@ class ApresentationStructurePage extends StatefulWidget {
 
 class _ApresentationStructurePageState
     extends State<ApresentationStructurePage> {
-  final PageController _pageController = PageController();
+  late PageController _pageController;
   late ApresentationCubit _cubit;
 
   @override
   void initState() {
     super.initState();
     _cubit = context.read<ApresentationCubit>();
+    _pageController = PageController(initialPage: _cubit.currentPage);
   }
 
   @override
@@ -193,7 +194,7 @@ class _ApresentationStructurePageState
     }
     return currentPage == indexPage
         ? Theme.of(context).primaryColor
-        : StyleApp.disabled;
+        : StylesApp.disabled;
   }
 
   Widget skipButtonVisibility() {
@@ -208,7 +209,8 @@ class _ApresentationStructurePageState
               style: TextStyle(
                 color: Theme.of(context).primaryColor,
                 fontSize: 16,
-                fontWeight: StyleApp.textButtonFontWeight,
+                fontWeight: StylesApp
+                    .textButtonFontWeight, //StyleApp.textButtonFontWeight,
               ),
             ),
           );
