@@ -2,6 +2,8 @@
 import 'package:go_router/go_router.dart';
 import 'package:todyapp/features/apresentation/presentation/pages/apresentation_structure_page.dart';
 import 'package:todyapp/features/home/presentation/pages/choose_theme_page.dart';
+import 'package:todyapp/features/home/presentation/pages/current_page.dart';
+import 'package:todyapp/features/home/presentation/pages/inbox_page.dart';
 import 'package:todyapp/features/login/presentation/pages/create_account_page.dart';
 import 'package:todyapp/features/login/presentation/pages/login_email_page.dart';
 import 'package:todyapp/features/login/presentation/pages/login_page.dart';
@@ -26,5 +28,7 @@ final goRouter = GoRouter(
       path: '/choose-theme',
       builder: (context, state) => const ChooseThemePage(),
     ),
+    GoRoute(path: '/inbox', builder: (context, state) => const InboxPage()),
+    GoRoute(path: '/home', builder: (context, state) => CurrentPage()),
   ],
 );

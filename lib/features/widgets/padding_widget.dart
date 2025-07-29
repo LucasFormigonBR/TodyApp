@@ -7,7 +7,12 @@ class PaddingWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsetsGeometry.symmetric(horizontal: 32, vertical: 16),
+      padding: EdgeInsetsGeometry.only(
+        left: 32,
+        right: 32,
+        bottom: 16,
+        top: 40,
+      ),
       child: child,
     );
   }

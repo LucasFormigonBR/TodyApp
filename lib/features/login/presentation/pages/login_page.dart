@@ -67,7 +67,7 @@ class LoginPage extends StatelessWidget {
                   ),
                   Text(
                     "or continue with",
-                    style: TextStyle(color: StylesApp.grayText),
+                    style: TextStyle(color: StylesApp.greyText),
                   ),
                   Expanded(
                     child: Divider(
