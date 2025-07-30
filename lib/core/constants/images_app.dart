@@ -1,6 +1,6 @@
 class ImagesApp {
   /// Logo
-  static const String logo = 'assets/images/logo-description.png';
+  static const String logo = 'assets/images/logo.png';
 
   /// Icons
   static const String iconFacebook = 'assets/images/icons/icon-facebook.png';
