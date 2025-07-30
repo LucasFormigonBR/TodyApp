@@ -20,8 +20,7 @@ class _StepSwipeScreenState extends State<StepSwipeScreen> {
       appBar: AppBar(
         actions: [
           TextButton(
-            onPressed:
-                () {}, //Navigator.pushReplacementNamed(context, '/home'),
+            onPressed: () {},
             child: Text(
               "Skip",
               style: TextStyle(
@@ -37,8 +36,6 @@ class _StepSwipeScreenState extends State<StepSwipeScreen> {
         children: [
           Flexible(
             child: Container(
-              //height: 450,
-              //color: Colors.blue,
               child: PageView.builder(
                 controller: _pageController,
                 itemCount: _totalPages,
@@ -51,8 +48,7 @@ class _StepSwipeScreenState extends State<StepSwipeScreen> {
                     children: [
                       Positioned(
                         top: 10,
-                        child: Container(
-                          //color: Colors.red,
+                        child: SizedBox(
                           child: Image.asset('assets/images/phone-1.png'),
                         ),
                       ),

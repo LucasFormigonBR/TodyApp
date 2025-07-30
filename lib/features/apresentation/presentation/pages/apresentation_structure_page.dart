@@ -42,7 +42,6 @@ class _ApresentationStructurePageState
                   controller: _pageController,
                   itemCount: _cubit.totalPages,
                   onPageChanged: (index) => _cubit.updatePage(page: index),
-                  //_currentPage = index,
                   itemBuilder: (context, indexPage) {
                     switch (indexPage) {
                       case 0:
@@ -159,9 +158,6 @@ class _ApresentationStructurePageState
                         currentPage: _cubit.currentPage,
                         indexPage: index,
                       ),
-                      //cubit.currentPage == index
-                      //     ? Theme.of(context).primaryColor
-                      //     : StyleApp.disabled,
                       borderRadius: BorderRadius.circular(5),
                     ),
                   ),
@@ -201,16 +197,13 @@ class _ApresentationStructurePageState
     return _cubit.currentPage == 0
         ? SizedBox.shrink()
         : TextButton(
-            onPressed: () => context.go(
-              '/login',
-            ), //Navigator.pushReplacementNamed(context, '/home'),
+            onPressed: () => context.go('/login'),
             child: Text(
               "Pular",
               style: TextStyle(
                 color: Theme.of(context).primaryColor,
                 fontSize: 16,
-                fontWeight: StylesApp
-                    .textButtonFontWeight, //StyleApp.textButtonFontWeight,
+                fontWeight: StylesApp.textButtonFontWeight,
               ),
             ),
           );

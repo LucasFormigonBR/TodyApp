@@ -54,9 +54,7 @@ class _TaskWidgetState extends State<TaskWidget> {
                   Spacer(),
                   MoreOptions(
                     task: widget.task,
-                    onPressed: () => showModalEditTask(
-                      widget.task,
-                    ), //showModalOptionsTask(widget.task),
+                    onPressed: () => showModalEditTask(widget.task),
                   ),
                 ],
               ),

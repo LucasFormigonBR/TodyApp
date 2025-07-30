@@ -1,4 +1,3 @@
-// lib/app/app.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -36,8 +35,6 @@ class TodyApp extends StatelessWidget {
           appBarTheme: const AppBarTheme(backgroundColor: Colors.transparent),
           bottomNavigationBarTheme: BottomNavigationBarThemeData(
             backgroundColor: Colors.white,
-            //selectedIconTheme: IconThemeData(applyTextScaling: true),
-            //type: BottomNavigationBarType.fixed,
           ),
           textTheme: TextTheme(
             titleLarge: TextStyle(fontWeight: FontWeight.bold),

@@ -38,7 +38,6 @@ class LoginPage extends StatelessWidget {
                 ),
               ),
               Spacer(),
-              //SizedBox(height: 32.0),
               Image.asset(ImagesApp.phone3),
               Spacer(),
               Padding(

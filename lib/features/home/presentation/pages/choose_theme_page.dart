@@ -24,20 +24,7 @@ class ChooseThemePage extends StatelessWidget {
                   style: Theme.of(context).textTheme.labelLarge,
                 ),
                 SizedBox(height: 32),
-                Expanded(
-                  child: Image.asset(ImagesApp.themesCard),
-
-                  // ListView.builder(
-                  //   itemCount: 4,
-                  //   itemBuilder: (context, index) {
-                  //     return ListTile(
-                  //       title: Text("Teste"),
-                  //       style: ListTileStyle.drawer,
-                  //       splashColor: Colors.red,
-                  //     );
-                  //   },
-                  // ),
-                ),
+                Expanded(child: Image.asset(ImagesApp.themesCard)),
                 SizedBox(height: 40),
                 ElevatedButton(
                   child: Text("Abrir o Todyapp"),

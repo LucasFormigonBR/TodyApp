@@ -1,4 +1,3 @@
-// lib/app/router.dart
 import 'package:go_router/go_router.dart';
 import 'package:todyapp/features/apresentation/presentation/pages/apresentation_structure_page.dart';
 import 'package:todyapp/features/home/presentation/pages/choose_theme_page.dart';
