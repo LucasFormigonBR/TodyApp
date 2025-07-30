@@ -21,31 +21,31 @@ class LoginEmailPage extends StatelessWidget {
                 children: [
                   SizedBox(height: 40),
                   Text(
-                    "Welcome Back!",
+                    "Bem-vindo de volta!",
                     style: Theme.of(context).textTheme.titleLarge,
                   ),
                   SizedBox(height: 8),
                   Text(
-                    "Your work faster and structured with Todyapp",
+                    "Seu trabalho mais rápido e estruturado com o Todyapp",
                     style: Theme.of(context).textTheme.labelLarge,
                   ),
                   SizedBox(height: 36),
                   Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
-                      "Email Address",
+                      "Endereço de e-mail",
                       style: Theme.of(context).textTheme.titleMedium,
                     ),
                   ),
                   SizedBox(height: 16),
                   TextFormField(
                     controller: emailAddress,
-                    decoration: InputDecoration(hintText: "name@example.com"),
+                    decoration: InputDecoration(hintText: "nome@exemplo.com"),
                   ),
                   Spacer(),
                   ElevatedButton(
                     onPressed: () => context.go('/create-account'),
-                    child: Text("Next"),
+                    child: Text("Próximo"),
                   ),
                   SizedBox(height: 24),
                 ],

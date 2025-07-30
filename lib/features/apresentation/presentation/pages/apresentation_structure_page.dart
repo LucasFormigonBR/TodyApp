@@ -52,14 +52,14 @@ class _ApresentationStructurePageState
                           image: 'assets/images/phone-1.png',
                           texts: [
                             Text(
-                              "Your convenience in",
+                              "Sua conveniência em",
                               style: TextStyle(
                                 fontSize: 22,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
                             Text(
-                              "making a todo list",
+                              "fazer lista de coisas a fazer",
                               style: TextStyle(
                                 fontSize: 22,
                                 fontWeight: FontWeight.bold,
@@ -67,7 +67,7 @@ class _ApresentationStructurePageState
                             ),
                             SizedBox(height: 16),
                             Text(
-                              "Here's a mobile platform that helps you create task",
+                              "Aqui está uma plataforma móvel que ajuda você a criar tarefas ou para listar para que ele possa ajudá-lo em cada trabalho",
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 fontSize: 14,
@@ -75,7 +75,7 @@ class _ApresentationStructurePageState
                               ),
                             ),
                             Text(
-                              "or to list so that it can help you in every job",
+                              "ou para listar para que ele possa ajudá-lo em cada trabalho",
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 fontSize: 14,
@@ -83,7 +83,7 @@ class _ApresentationStructurePageState
                               ),
                             ),
                             Text(
-                              "easier and faster.",
+                              "mais fácil e rápido.",
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 fontSize: 14,
@@ -97,14 +97,14 @@ class _ApresentationStructurePageState
                           image: 'assets/images/phone-2.png',
                           texts: [
                             Text(
-                              "Find the practicality in",
+                              "Encontre a praticidade em",
                               style: TextStyle(
                                 fontSize: 22,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
                             Text(
-                              "making your todo list",
+                              "fazendo sua lista de coisas a fazer",
                               style: TextStyle(
                                 fontSize: 22,
                                 fontWeight: FontWeight.bold,
@@ -112,7 +112,7 @@ class _ApresentationStructurePageState
                             ),
                             SizedBox(height: 16),
                             Text(
-                              "Easy-to-understand user interface that makes you",
+                              "Fácil de entender a interface do usuário que faz você",
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 fontSize: 14,
@@ -120,7 +120,7 @@ class _ApresentationStructurePageState
                               ),
                             ),
                             Text(
-                              "more comfortable when you want to create a task or",
+                              "mais confortável quando você quer criar uma tarefa ou",
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 fontSize: 14,
@@ -128,7 +128,7 @@ class _ApresentationStructurePageState
                               ),
                             ),
                             Text(
-                              "to do list, Todyapp can also improve productivity.",
+                              "para fazer a lista, Todyapp também pode melhorar a produtividade.",
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 fontSize: 14,
@@ -205,7 +205,7 @@ class _ApresentationStructurePageState
               '/login',
             ), //Navigator.pushReplacementNamed(context, '/home'),
             child: Text(
-              "Skip",
+              "Pular",
               style: TextStyle(
                 color: Theme.of(context).primaryColor,
                 fontSize: 16,
@@ -232,7 +232,7 @@ class _ApresentationStructurePageState
                 }
                 context.go('/login');
               },
-              child: const Text("Continue"),
+              child: const Text("Continuar"),
             ),
           );
   }

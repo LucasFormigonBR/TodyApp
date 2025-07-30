@@ -19,7 +19,7 @@ class LoginPage extends StatelessWidget {
               Spacer(),
               RichText(
                 text: TextSpan(
-                  text: "Welcome to",
+                  text: "Bem-vindo ao",
                   style: TextStyle(
                     fontSize: 32.0,
                     fontWeight: FontWeight.bold,
@@ -50,7 +50,7 @@ class LoginPage extends StatelessWidget {
                     children: [
                       Icon(Icons.email, size: 24.0),
                       SizedBox(width: 8.0),
-                      Text("Continue with email"),
+                      Text("Continuar com e-mail"),
                     ],
                   ),
                 ),
@@ -66,7 +66,7 @@ class LoginPage extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    "or continue with",
+                    "ou continue com",
                     style: TextStyle(color: StylesApp.greyText),
                   ),
                   Expanded(
@@ -121,7 +121,7 @@ class LoginPage extends StatelessWidget {
                           ),
                           SizedBox(width: 8.0),
                           Text(
-                            "Apple",
+                            "Google",
                             style: Theme.of(context).textTheme.labelLarge,
                           ),
                         ],

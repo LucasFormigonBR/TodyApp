@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../../../core/constants/images_app.dart';
+
 class InitialApresentationPage extends StatelessWidget {
   const InitialApresentationPage({super.key});
 
@@ -7,11 +9,7 @@ class InitialApresentationPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColor,
-      body: Column(
-        children: [
-          Expanded(child: Image.asset('assets/images/logo-description.png')),
-        ],
-      ),
+      body: Column(children: [Expanded(child: Image.asset(ImagesApp.logo))]),
     );
   }
 }

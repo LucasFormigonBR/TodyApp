@@ -15,12 +15,12 @@ class ChooseThemePage extends StatelessWidget {
             child: Column(
               children: [
                 Text(
-                  "Create to do list",
+                  "Criando lista de tarefas",
                   style: Theme.of(context).textTheme.titleLarge,
                 ),
                 SizedBox(height: 8),
                 Text(
-                  "Choose your to do list color theme:",
+                  "Defina as prioridades de cada tarefa como preferir",
                   style: Theme.of(context).textTheme.labelLarge,
                 ),
                 SizedBox(height: 32),
@@ -40,7 +40,7 @@ class ChooseThemePage extends StatelessWidget {
                 ),
                 SizedBox(height: 40),
                 ElevatedButton(
-                  child: Text("Open Todyapp"),
+                  child: Text("Abrir o Todyapp"),
                   onPressed: () => context.go('/home'),
                 ),
               ],
