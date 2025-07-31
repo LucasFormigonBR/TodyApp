@@ -229,7 +229,6 @@ class _ModalTaskState extends State<ModalTask> {
       context: context,
       builder: (context) {
         return Dialog(
-          backgroundColor: Colors.white,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
           ),

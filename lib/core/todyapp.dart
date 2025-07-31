@@ -82,6 +82,13 @@ class TodyApp extends StatelessWidget {
               disabledForegroundColor: StylesApp.disableButton,
             ),
           ),
+          dialogTheme: DialogThemeData(backgroundColor: Colors.white),
+          bottomSheetTheme: BottomSheetThemeData(
+            backgroundColor: Colors.white,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+            ),
+          ),
         ),
         routerConfig: goRouter,
       ),
