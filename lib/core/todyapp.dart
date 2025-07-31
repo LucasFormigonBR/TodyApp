@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:todyapp/core/constants/styles_app.dart';
-import 'package:todyapp/core/routes/router.dart';
-import 'package:todyapp/features/apresentation/presentation/cubit/apresentation_cubit.dart';
+import 'package:todyapp/core/configs/theme/styles_app.dart';
+import 'package:todyapp/core/configs/routes/router.dart';
 
-import '../features/home/presentation/cubit/list_task_cubit.dart';
+import '../presentation/apresentation/cubit/apresentation_cubit.dart';
+import '../presentation/home/cubit/list_task_cubit.dart';
 
 class TodyApp extends StatelessWidget {
   const TodyApp({super.key});
