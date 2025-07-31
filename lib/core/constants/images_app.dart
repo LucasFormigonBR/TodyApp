@@ -13,4 +13,8 @@ class ImagesApp {
 
   /// Themes Card
   static const String themesCard = 'assets/images/themes-card.png';
+
+  /// Messages Images
+  static const String emptyListTasks =
+      'assets/images/messages/empty-list-tasks.png';
 }
