@@ -97,7 +97,7 @@ class LoginPage extends StatelessWidget {
                           SizedBox(width: 8.0),
                           Text(
                             "Facebook",
-                            style: TextStyle(color: StylesApp.colorDefaultText),
+                            style: StylesApp.textButtonBold(context),
                           ),
                         ],
                       ),
@@ -121,7 +121,7 @@ class LoginPage extends StatelessWidget {
                           SizedBox(width: 8.0),
                           Text(
                             "Google",
-                            style: Theme.of(context).textTheme.labelLarge,
+                            style: StylesApp.textButtonBold(context),
                           ),
                         ],
                       ),

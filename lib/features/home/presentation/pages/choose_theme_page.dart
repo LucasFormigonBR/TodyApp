@@ -21,6 +21,7 @@ class ChooseThemePage extends StatelessWidget {
                 SizedBox(height: 8),
                 Text(
                   "Defina as prioridades de cada tarefa como preferir",
+                  textAlign: TextAlign.center,
                   style: Theme.of(context).textTheme.labelLarge,
                 ),
                 SizedBox(height: 32),

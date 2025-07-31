@@ -35,137 +35,117 @@ class _ApresentationStructurePageState
         return Scaffold(
           backgroundColor: scaffoldBackgroundColor(),
           appBar: AppBar(actions: [skipButtonVisibility()]),
-          body: Column(
-            children: [
-              Flexible(
-                child: PageView.builder(
-                  controller: _pageController,
-                  itemCount: _cubit.totalPages,
-                  onPageChanged: (index) => _cubit.updatePage(page: index),
-                  itemBuilder: (context, indexPage) {
-                    switch (indexPage) {
-                      case 0:
-                        return InitialApresentationPage();
-                      case 1:
-                        return ApresentationPage(
-                          image: 'assets/images/phone-1.png',
-                          texts: [
-                            Text(
-                              "Sua conveniência em",
-                              style: TextStyle(
-                                fontSize: 22,
-                                fontWeight: FontWeight.bold,
+          body: Padding(
+            padding: StylesApp.defaultPaddingHorizontal,
+            child: Column(
+              children: [
+                Flexible(
+                  child: PageView.builder(
+                    controller: _pageController,
+                    itemCount: _cubit.totalPages,
+                    onPageChanged: (index) => _cubit.updatePage(page: index),
+                    itemBuilder: (context, indexPage) {
+                      switch (indexPage) {
+                        case 0:
+                          return InitialApresentationPage();
+                        case 1:
+                          return ApresentationPage(
+                            image: 'assets/images/phone-1.png',
+                            texts: [
+                              Text(
+                                "Sua conveniência em",
+                                style: TextStyle(
+                                  fontSize: 22,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
-                            ),
-                            Text(
-                              "fazer lista de coisas a fazer",
-                              style: TextStyle(
-                                fontSize: 22,
-                                fontWeight: FontWeight.bold,
+                              Text(
+                                "fazer lista de coisas a fazer",
+                                style: TextStyle(
+                                  fontSize: 22,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
-                            ),
-                            SizedBox(height: 16),
-                            Text(
-                              "Aqui está uma plataforma móvel que ajuda você a criar tarefas ou para listar para que ele possa ajudá-lo em cada trabalho",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontSize: 14,
-                                color: Colors.grey,
+                              SizedBox(height: 16),
+                              Text(
+                                "Aqui esta uma plataforma móvel que facilita a criação e organização de tarefas, ajudando você a realizar cada atividade de forma mais simples e eficiente.",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.grey,
+                                ),
                               ),
-                            ),
-                            Text(
-                              "ou para listar para que ele possa ajudá-lo em cada trabalho",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontSize: 14,
-                                color: Colors.grey,
+                            ],
+                          );
+                        case 2:
+                          return ApresentationPage(
+                            image: 'assets/images/phone-2.png',
+                            texts: [
+                              Text(
+                                "Encontre a praticidade em",
+                                style: TextStyle(
+                                  fontSize: 22,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
-                            ),
-                            Text(
-                              "mais fácil e rápido.",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontSize: 14,
-                                color: Colors.grey,
+                              Text(
+                                "fazer sua lista de atividades",
+                                style: TextStyle(
+                                  fontSize: 22,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
-                            ),
-                          ],
-                        );
-                      case 2:
-                        return ApresentationPage(
-                          image: 'assets/images/phone-2.png',
-                          texts: [
-                            Text(
-                              "Encontre a praticidade em",
-                              style: TextStyle(
-                                fontSize: 22,
-                                fontWeight: FontWeight.bold,
+                              SizedBox(height: 16),
+                              Text(
+                                "A interface do usuário deixa fácil de entender, o que deixa você mais confortável quando você quer criar uma tarefa ou para fazer a lista.",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.grey,
+                                ),
                               ),
-                            ),
-                            Text(
-                              "fazendo sua lista de coisas a fazer",
-                              style: TextStyle(
-                                fontSize: 22,
-                                fontWeight: FontWeight.bold,
+
+                              Text(
+                                "Todyapp também pode melhorar a produtividade.",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.grey,
+                                ),
                               ),
-                            ),
-                            SizedBox(height: 16),
-                            Text(
-                              "Fácil de entender a interface do usuário que faz você",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontSize: 14,
-                                color: Colors.grey,
-                              ),
-                            ),
-                            Text(
-                              "mais confortável quando você quer criar uma tarefa ou",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontSize: 14,
-                                color: Colors.grey,
-                              ),
-                            ),
-                            Text(
-                              "para fazer a lista, Todyapp também pode melhorar a produtividade.",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontSize: 14,
-                                color: Colors.grey,
-                              ),
-                            ),
-                          ],
-                        );
-                      default:
-                        return Container(color: Colors.white);
-                    }
-                  },
+                            ],
+                          );
+                        default:
+                          return Container(color: Colors.white);
+                      }
+                    },
+                  ),
                 ),
-              ),
-              SizedBox(height: 32),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: List.generate(
-                  _cubit.totalPages,
-                  (index) => AnimatedContainer(
-                    duration: Duration(milliseconds: 300),
-                    margin: EdgeInsets.symmetric(horizontal: 6),
-                    width: _cubit.currentPage == index ? 32 : 10,
-                    height: 10,
-                    decoration: BoxDecoration(
-                      color: stepColor(
-                        currentPage: _cubit.currentPage,
-                        indexPage: index,
+                SizedBox(height: 32),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: List.generate(
+                    _cubit.totalPages,
+                    (index) => AnimatedContainer(
+                      duration: Duration(milliseconds: 300),
+                      margin: EdgeInsets.symmetric(horizontal: 6),
+                      width: _cubit.currentPage == index ? 32 : 10,
+                      height: 10,
+                      decoration: BoxDecoration(
+                        color: stepColor(
+                          currentPage: _cubit.currentPage,
+                          indexPage: index,
+                        ),
+                        borderRadius: BorderRadius.circular(5),
                       ),
-                      borderRadius: BorderRadius.circular(5),
                     ),
                   ),
                 ),
-              ),
-              SizedBox(height: 24),
-              continueButtonVisibility(),
-            ],
+                SizedBox(height: 24),
+                continueButtonVisibility(),
+              ],
+            ),
           ),
         );
       },

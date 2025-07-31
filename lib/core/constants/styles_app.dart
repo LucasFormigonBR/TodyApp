@@ -3,6 +3,9 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 
 class StylesApp {
+  /// Structure Styles
+  static const defaultPaddingHorizontal = EdgeInsets.symmetric(horizontal: 16);
+
   /// Primary Colors
   static const Color disabled = Color(0xFFCBF1F0);
   static const Color disableButton = Colors.grey;
@@ -17,6 +20,19 @@ class StylesApp {
 
   /// FontWeight Buttons
   static const FontWeight textButtonFontWeight = FontWeight.w500;
+
+  /// Text Buttons
+  static TextStyle textButtonDefault(BuildContext context) {
+    return Theme.of(context).textTheme.labelLarge!.copyWith(
+      fontWeight: Theme.of(context).textTheme.labelLarge!.fontWeight,
+    );
+  }
+
+  static TextStyle textButtonBold(BuildContext context) {
+    return Theme.of(
+      context,
+    ).textTheme.labelLarge!.copyWith(fontWeight: FontWeight.bold);
+  }
 
   /// Colors Icons
   static const Color greyIcon = Color(0xFF767E8C);

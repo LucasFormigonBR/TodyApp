@@ -10,6 +10,7 @@ import 'package:todyapp/features/home/presentation/widgets/button_select_all.dar
 import 'package:todyapp/features/home/presentation/widgets/task_widget.dart';
 import 'package:todyapp/features/widgets/padding_widget.dart';
 
+import '../../../../core/constants/images_app.dart';
 import '../../domain/entities/task.dart';
 import '../cubit/button_cubit.dart';
 import '../cubit/list_task_cubit.dart';
@@ -113,8 +114,14 @@ class _InboxPageState extends State<InboxPage> {
                     builder: (context, state) {
                       if (state is TasksInitial) {
                         return Expanded(
-                          child: Center(
-                            child: Text('Nenhuma tarefa para hoje!'),
+                          child: Opacity(
+                            opacity: 0.5,
+                            child: Center(
+                              child: Image.asset(
+                                ImagesApp.emptyListTasks,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
                           ),
                         );
                       }
@@ -128,8 +135,18 @@ class _InboxPageState extends State<InboxPage> {
                       if (state is TasksLoaded) {
                         if (state.tasks.isEmpty) {
                           return Expanded(
-                            child: Center(
-                              child: Text('Nenhuma tarefa para hoje!'),
+                            child: Opacity(
+                              opacity: 0.5,
+                              child: Center(
+                                child: Column(
+                                  children: [
+                                    Image.asset(
+                                      ImagesApp.emptyListTasks,
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ],
+                                ),
+                              ),
                             ),
                           );
                         }

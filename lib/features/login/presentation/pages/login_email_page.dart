@@ -27,6 +27,7 @@ class LoginEmailPage extends StatelessWidget {
                   SizedBox(height: 8),
                   Text(
                     "Seu trabalho mais rápido e estruturado com o Todyapp",
+                    textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.labelLarge,
                   ),
                   SizedBox(height: 36),
