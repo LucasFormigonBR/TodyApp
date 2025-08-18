@@ -2,10 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:todyapp/core/configs/assets/images_app.dart';
 
+import '../../../common/helpers/notification.dart';
 import '../../../core/configs/theme/styles_app.dart';
 
-class LoginPage extends StatelessWidget {
-  const LoginPage({super.key});
+class LoginPage extends StatefulWidget {
+  final message;
+  const LoginPage({super.key, required this.message});
+
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  @override
+  void initState() {
+    super.initState();
+    NotificationHelper.getAlertNotification(widget.message, color: Colors.red);
+  }
 
   @override
   Widget build(BuildContext context) {

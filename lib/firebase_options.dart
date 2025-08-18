@@ -85,4 +85,5 @@ class DefaultFirebaseOptions {
     storageBucket: 'todyapp-notes.firebasestorage.app',
     measurementId: 'G-RR18CGVD0Y',
   );
+
 }

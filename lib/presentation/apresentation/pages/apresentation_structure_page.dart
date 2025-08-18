@@ -3,12 +3,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:todyapp/core/configs/theme/styles_app.dart';
 
+import '../../../common/helpers/notification.dart';
 import '../cubit/apresentation_cubit.dart';
 import 'apresentation_page.dart';
 import 'initial_apresentation_page.dart';
 
 class ApresentationStructurePage extends StatefulWidget {
-  ApresentationStructurePage({super.key});
+  final String message;
+  ApresentationStructurePage({super.key, required this.message});
 
   @override
   State<ApresentationStructurePage> createState() =>
@@ -23,6 +25,7 @@ class _ApresentationStructurePageState
   @override
   void initState() {
     super.initState();
+    NotificationHelper.getAlertNotification(widget.message, color: Colors.red);
     _cubit = context.read<ApresentationCubit>();
     _pageController = PageController(initialPage: _cubit.currentPage);
   }
