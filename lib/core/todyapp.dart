@@ -1,9 +1,11 @@
+import 'package:flashy_flushbar/flashy_flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:todyapp/core/configs/theme/styles_app.dart';
+
 import 'package:todyapp/core/configs/routes/router.dart';
+import 'package:todyapp/core/configs/theme/styles_app.dart';
 
 import '../presentation/apresentation/cubit/apresentation_cubit.dart';
 import '../presentation/home/cubit/list_task_cubit.dart';
@@ -11,7 +13,6 @@ import '../presentation/home/cubit/list_task_cubit.dart';
 class TodyApp extends StatelessWidget {
   const TodyApp({super.key});
 
-  @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
@@ -20,6 +21,7 @@ class TodyApp extends StatelessWidget {
       ],
       child: MaterialApp.router(
         debugShowCheckedModeBanner: false,
+        builder: FlashyFlushbarProvider.init(),
         title: 'Todyapp',
         localizationsDelegates: const [
           GlobalMaterialLocalizations.delegate,

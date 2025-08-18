@@ -1,15 +1,20 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 import 'package:flutter/material.dart';
-import 'package:todyapp/firebase_options.dart';
-
+import 'core/service_locator.dart';
 import 'core/todyapp.dart';
 
-void initializeFirebase() async {
+Future<void> initializeFirebase() async {
   WidgetsFlutterBinding.ensureInitialized();
+
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 }
 
-void main() {
-  initializeFirebase();
+Future<void> initializeApp() async {
+  await initializeFirebase();
+  await initializeDependencies();
+
   runApp(TodyApp());
 }
+
+main() => initializeApp();
