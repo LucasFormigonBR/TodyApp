@@ -15,22 +15,22 @@ import '../firebase/firebase_auth_app.dart';
 
 final navigatorKey = GlobalKey<NavigatorState>();
 final prefs = sl<SharedPreferences>();
-final initialRoute = prefs.getString('initial_route') ?? "/";
 final firebaseAuth = sl<FirebaseAuth>();
+
+final initialRoute = prefs.getString('initial_route') ?? "/";
+final userAuthenticated = prefs.getBool('authenticated') ?? false;
+final currentRoute = prefs.getString('current_route') ?? "";
 
 final goRouter = GoRouter(
   navigatorKey: navigatorKey,
   initialLocation: initialRoute,
   redirect: (BuildContext context, GoRouterState state) async {
     final uri = state.uri;
-    final currentRoute = prefs.getString('current_route') ?? "";
     final firebaseAuthApp = FirebaseAuthApp();
 
     bool isAuthenticationURI = firebaseAuthApp.isAuthenticationURI(uri);
 
     if (isAuthenticationURI) {
-      final userAuthenticated = prefs.getBool('authenticated') ?? false;
-
       if (userAuthenticated) {
         return currentRoute;
       }
