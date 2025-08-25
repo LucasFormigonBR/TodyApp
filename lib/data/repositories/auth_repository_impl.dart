@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:todyapp/domain/repositories/auth_repository.dart';
 
@@ -33,6 +34,21 @@ class AuthRepositoryImpl implements AuthRepository {
       Exception("Email não verificado");
     } catch (e) {
       throw Exception(e);
+    }
+  }
+
+  @override
+  Future<void> authenticateWithGithub() async {
+    try {
+      final githubUser = await dataSource.authenticateWithGithub();
+      final emailUser = githubUser.user?.email ?? "";
+
+      _prefs.setString('user_email', emailUser);
+      _prefs.setBool('authenticated', true);
+    } on FirebaseException catch (e) {
+      throw Exception(e);
+    } catch (e) {
+      throw "Houve um erro ao autenticar com o Github: $e";
     }
   }
 }

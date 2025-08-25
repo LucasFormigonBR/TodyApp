@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:todyapp/domain/usecases/authenticate_with_github.dart';
 
 import '../data/datasources/firebase_auth_data_source.dart';
 import '../data/repositories/auth_repository_impl.dart';
@@ -35,8 +36,11 @@ Future<void> initializeDependencies() async {
   sl.registerLazySingleton<AuthenticateWithGoogle>(
     () => AuthenticateWithGoogle(sl()),
   );
+  sl.registerLazySingleton<AuthenticateWithGithub>(
+    () => AuthenticateWithGithub(sl()),
+  );
 
   // Cubits
-  sl.registerFactory<LoginCubit>(() => LoginCubit(sl()));
+  sl.registerFactory<LoginCubit>(() => LoginCubit(sl(), sl()));
   sl.registerFactory<EmailCubit>(() => EmailCubit(sl()));
 }

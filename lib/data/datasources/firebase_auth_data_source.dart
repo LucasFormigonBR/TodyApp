@@ -41,4 +41,15 @@ class FirebaseAuthDataSource {
 
     return await _firebaseAuth.signInWithCredential(credential);
   }
+
+  Future<UserCredential> authenticateWithGithub() async {
+    try {
+      GithubAuthProvider githubProvider = GithubAuthProvider();
+      return await _firebaseAuth.signInWithProvider(githubProvider);
+    } on FirebaseException catch (e) {
+      throw FirebaseAuthException(code: e.code, message: e.message);
+    } catch (e) {
+      throw Exception('Erro ao autenticar com o Github: $e');
+    }
+  }
 }

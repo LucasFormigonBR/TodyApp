@@ -179,20 +179,21 @@ class _LoginPageState extends State<LoginPage> {
                                           MainAxisAlignment.center,
                                       children: [
                                         Image.asset(
-                                          ImagesApp.iconFacebook,
+                                          ImagesApp.iconGithub,
                                           width: 24,
                                           height: 24,
                                         ),
                                         SizedBox(width: 8.0),
                                         Text(
-                                          "Facebook",
+                                          "Github",
                                           style: StylesApp.textButtonBold(
                                             context,
                                           ),
                                         ),
                                       ],
                                     ),
-                                    onPressed: () {},
+                                    onPressed: () =>
+                                        loginCubit.authenticateWithGithub(),
                                   );
                                 }
 
@@ -207,13 +208,13 @@ class _LoginPageState extends State<LoginPage> {
                                           MainAxisAlignment.center,
                                       children: [
                                         Image.asset(
-                                          ImagesApp.iconFacebook,
+                                          ImagesApp.iconGithub,
                                           width: 24,
                                           height: 24,
                                         ),
                                         SizedBox(width: 8.0),
                                         Text(
-                                          "Facebook",
+                                          "Github",
                                           style: StylesApp.textButtonBold(
                                             context,
                                           ),
@@ -233,13 +234,13 @@ class _LoginPageState extends State<LoginPage> {
                                           MainAxisAlignment.center,
                                       children: [
                                         Image.asset(
-                                          ImagesApp.iconFacebook,
+                                          ImagesApp.iconGithub,
                                           width: 24,
                                           height: 24,
                                         ),
                                         SizedBox(width: 8.0),
                                         Text(
-                                          "Facebook",
+                                          "Github",
                                           style: StylesApp.textButtonBold(
                                             context,
                                           ),
