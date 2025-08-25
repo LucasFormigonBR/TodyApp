@@ -3,7 +3,7 @@ class ImagesApp {
   static const String logo = 'assets/images/logo.png';
 
   /// Icons
-  static const String iconFacebook = 'assets/images/icons/icon-facebook.png';
+  static const String iconGithub = 'assets/images/icons/icon-github.png';
   static const String iconGoogle = 'assets/images/icons/icon-google.png';
 
   /// Phones

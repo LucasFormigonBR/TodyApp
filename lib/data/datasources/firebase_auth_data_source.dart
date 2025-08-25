@@ -1,7 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:todyapp/core/configs/constants/firebase_tokens.dart';
+
+import '../../core/service_locator.dart';
 
 class FirebaseAuthDataSource {
   final FirebaseAuth _firebaseAuth;
+  final GoogleSignIn _googleSignIn = sl<GoogleSignIn>();
 
   FirebaseAuthDataSource(this._firebaseAuth);
 
@@ -22,6 +27,29 @@ class FirebaseAuthDataSource {
       );
     } on FirebaseAuthException catch (e) {
       throw FirebaseAuthException(code: e.code);
+    }
+  }
+
+  Future<UserCredential> authenticateWithGoogle() async {
+    _googleSignIn.initialize(serverClientId: FirebaseTokens.serverClientId);
+
+    final googleUser = await _googleSignIn.authenticate();
+    final googleAuth = googleUser.authentication;
+    final credential = GoogleAuthProvider.credential(
+      idToken: googleAuth.idToken,
+    );
+
+    return await _firebaseAuth.signInWithCredential(credential);
+  }
+
+  Future<UserCredential> authenticateWithGithub() async {
+    try {
+      GithubAuthProvider githubProvider = GithubAuthProvider();
+      return await _firebaseAuth.signInWithProvider(githubProvider);
+    } on FirebaseException catch (e) {
+      throw FirebaseAuthException(code: e.code, message: e.message);
+    } catch (e) {
+      throw Exception('Erro ao autenticar com o Github: $e');
     }
   }
 }
