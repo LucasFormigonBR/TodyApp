@@ -137,7 +137,7 @@ class _ModalTaskState extends State<ModalTask> {
                               icon: Icon(Icons.send),
                               color: Theme.of(context).colorScheme.primary,
                               onPressed: state.isActive
-                                  ? () {
+                                  ? () async {
                                       if (formKey.currentState!.validate()) {
                                         final listTaskCubit = context
                                             .read<ListTaskCubit>();
@@ -149,12 +149,14 @@ class _ModalTaskState extends State<ModalTask> {
                                         );
 
                                         if (widget.isNewTask) {
-                                          listTaskCubit.addTask(newTask);
-                                          context.pop();
-                                          return;
+                                          await listTaskCubit.addTask(newTask);
+                                          if (context.mounted) {
+                                            context.pop();
+                                            return;
+                                          }
                                         }
-                                        listTaskCubit.editTask(newTask);
-                                        context.pop();
+                                        await listTaskCubit.editTask(newTask);
+                                        if (context.mounted) context.pop();
                                       }
                                     }
                                   : null,

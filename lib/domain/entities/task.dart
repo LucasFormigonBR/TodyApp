@@ -3,7 +3,7 @@ import 'package:equatable/equatable.dart';
 import '../../presentation/home/ui_models/ui_priority.dart';
 
 class Task extends Equatable {
-  final int? id;
+  final String? id;
   final String title;
   final String description;
   final String date;
@@ -20,7 +20,7 @@ class Task extends Equatable {
   });
 
   Task copyWith({
-    int? id,
+    String? id,
     String? title,
     String? description,
     String? date,

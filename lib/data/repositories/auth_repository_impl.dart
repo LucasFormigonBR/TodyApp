@@ -26,7 +26,11 @@ class AuthRepositoryImpl implements AuthRepository {
     try {
       final googleUser = await dataSource.authenticateWithGoogle();
       if (googleUser.user?.emailVerified ?? false) {
-        _prefs.setString("user_email", googleUser.user?.email ?? "");
+        final uidUser = googleUser.user?.uid ?? "";
+        final emailUser = googleUser.user?.email ?? "";
+
+        _prefs.setString("uid", uidUser);
+        _prefs.setString("user_email", emailUser);
         _prefs.setBool('authenticated', true);
         return;
       }
@@ -42,7 +46,9 @@ class AuthRepositoryImpl implements AuthRepository {
     try {
       final githubUser = await dataSource.authenticateWithGithub();
       final emailUser = githubUser.user?.email ?? "";
+      final uidUser = githubUser.user?.uid ?? "";
 
+      _prefs.setString("uid", uidUser);
       _prefs.setString('user_email', emailUser);
       _prefs.setBool('authenticated', true);
     } on FirebaseException catch (e) {
