@@ -8,11 +8,13 @@ import 'package:todyapp/presentation/home/widgets/modal_task.dart';
 
 import '../ui_models/ui_priority.dart';
 
+import 'modal_delete_task.dart';
 import 'more_options.dart';
 
 class TaskWidget extends StatefulWidget {
+  final int index;
   final Task task;
-  const TaskWidget({super.key, required this.task});
+  const TaskWidget({super.key, required this.index, required this.task});
 
   @override
   State<TaskWidget> createState() => _TaskWidgetState();
@@ -54,7 +56,7 @@ class _TaskWidgetState extends State<TaskWidget> {
                   Spacer(),
                   MoreOptions(
                     task: widget.task,
-                    onPressed: () => showModalEditTask(widget.task),
+                    onPressed: () => showModalOptionsTask(widget.task),
                   ),
                 ],
               ),
@@ -130,16 +132,35 @@ class _TaskWidgetState extends State<TaskWidget> {
       builder: (context) => Dialog(
         child: Padding(
           padding: EdgeInsets.all(16),
-          child: ListView(
-            shrinkWrap: true,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
             children: [
-              ListTile(
-                leading: Icon(Icons.edit),
-                title: Text("Editar"),
-                onTap: () {
-                  Navigator.of(context).pop();
-                  showModalEditTask(task);
-                },
+              Text(
+                'Opções',
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
+              Divider(color: Colors.grey[300]),
+              ListView(
+                shrinkWrap: true,
+                children: [
+                  ListTile(
+                    leading: Icon(Icons.edit, color: Colors.deepOrange),
+                    title: Text("Editar informações"),
+                    onTap: () {
+                      Navigator.of(context).pop();
+                      showModalEditTask(task);
+                    },
+                  ),
+                  ListTile(
+                    leading: Icon(Icons.delete, color: Colors.red),
+                    title: Text("Excluir tarefa"),
+                    onTap: () {
+                      Navigator.of(context).pop();
+                      showModalDeleteTask(widget.index);
+                    },
+                  ),
+                ],
               ),
             ],
           ),
@@ -156,6 +177,13 @@ class _TaskWidgetState extends State<TaskWidget> {
       context: context,
       builder: (contextModal) =>
           ModalTask(contextModal: contextModal, isNewTask: false, task: task),
+    );
+  }
+
+  Future<void> showModalDeleteTask(int index) async {
+    showDialog(
+      context: context,
+      builder: (contextModal) => ModalDeleteTask(index),
     );
   }
 }

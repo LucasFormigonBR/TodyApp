@@ -6,9 +6,15 @@ import 'package:google_fonts/google_fonts.dart';
 
 import 'package:todyapp/core/configs/routes/router.dart';
 import 'package:todyapp/core/configs/theme/styles_app.dart';
+import 'package:todyapp/domain/usecases/add_task.dart';
+import 'package:todyapp/domain/usecases/remove_multiple_tasks.dart';
 
+import '../domain/usecases/get_all_tasks.dart';
+import '../domain/usecases/remove_task.dart';
+import '../domain/usecases/update_task.dart';
 import '../presentation/apresentation/cubit/apresentation_cubit.dart';
 import '../presentation/home/cubit/list_task_cubit.dart';
+import 'service_locator.dart';
 
 class TodyApp extends StatelessWidget {
   const TodyApp({super.key});
@@ -17,7 +23,15 @@ class TodyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (_) => ApresentationCubit()),
-        BlocProvider(create: (_) => ListTaskCubit()),
+        BlocProvider(
+          create: (_) => ListTaskCubit(
+            sl<AddTask>(),
+            sl<GetAllTasks>(),
+            sl<UpdateTask>(),
+            sl<RemoveTask>(),
+            sl<RemoveMultipleTasks>(),
+          ),
+        ),
       ],
       child: MaterialApp.router(
         debugShowCheckedModeBanner: false,

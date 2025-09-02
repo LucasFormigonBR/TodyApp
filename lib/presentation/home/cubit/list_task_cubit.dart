@@ -1,26 +1,51 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:todyapp/domain/entities/task.dart';
+import 'package:todyapp/domain/usecases/add_task.dart';
 import 'package:todyapp/presentation/home/cubit/task_state.dart';
+
+import '../../../domain/usecases/get_all_tasks.dart';
+import '../../../domain/usecases/remove_multiple_tasks.dart';
+import '../../../domain/usecases/remove_task.dart';
+import '../../../domain/usecases/update_task.dart';
 
 class ListTaskCubit extends Cubit<TaskState> {
   List<Task> _tasks = [];
   List<Task> get tasks => _tasks;
-  List<Task> _selectedTasks = [];
-  List<Task> get selectedTasks => _selectedTasks;
+  final AddTask _addTask;
+  final GetAllTasks _getAllTasks;
+  final UpdateTask _updateTask;
+  final RemoveTask _removeTask;
+  final RemoveMultipleTasks _removeMultipleTasks;
 
-  ListTaskCubit() : super(TasksInitial());
+  ListTaskCubit(
+    this._addTask,
+    this._getAllTasks,
+    this._updateTask,
+    this._removeTask,
+    this._removeMultipleTasks,
+  ) : super(TasksInitial([])) {
+    loadTasks();
+  }
 
-  void addTask(Task task) async {
+  Future<void> loadTasks() async {
     emit(TasksLoading());
 
-    Random random = Random();
+    final result = await _getAllTasks();
 
-    task = task.copyWith(id: random.nextInt(100) + 1);
+    result.fold(
+      (exception) {
+        emit(TasksError(exception.message!));
+      },
+      (tasks) {
+        _tasks = tasks;
+        emit(TasksLoaded(_tasks));
+      },
+    );
+  }
 
+  Future<void> addTask(Task task) async {
     if (task.date.isEmpty) {
       DateTime todayDate = DateTime.now();
       task = task.copyWith(date: DateFormat('dd/MM/yyyy').format(todayDate));
@@ -33,44 +58,58 @@ class ListTaskCubit extends Cubit<TaskState> {
       task = task.copyWith(hours: "${hours}h$minutes");
     }
 
-    _tasks.add(task);
+    final result = await _addTask(task);
 
-    emit(TasksLoaded(_tasks));
+    result.fold(
+      (exception) {
+        emit(TasksError(exception.message!));
+      },
+      (idNewTask) {
+        task = task.copyWith(id: idNewTask);
+        _tasks.add(task);
+        emit(TasksLoaded(_tasks));
+      },
+    );
   }
 
-  void removeTask(int index) async {
-    emit(TasksLoading());
+  Future<void> removeTask(int index) async {
+    final result = await _removeTask(_tasks[index]);
 
-    await Future.delayed(const Duration(seconds: 1));
-
-    _tasks.removeAt(index);
-
-    emit(TasksLoaded(_tasks));
+    return result.fold((exception) => emit(TaskError(exception.message!)), (
+      success,
+    ) {
+      _tasks.removeAt(index);
+      emit(TasksLoaded(_tasks));
+    });
   }
 
   Future<void> removeTasks(List<Task> tasks) async {
     emit(TasksLoading());
 
-    await Future.delayed(const Duration(seconds: 1));
-
     for (var task in tasks) {
       _tasks = _tasks.where((t) => t.id != task.id).toList();
     }
 
-    emit(TasksLoaded(_tasks));
+    final result = await _removeMultipleTasks(tasks);
+
+    result.fold(
+      (exception) => emit(TaskError(exception.message!)),
+      (success) => emit(TasksLoaded(_tasks)),
+    );
   }
 
   Future<void> editTask(Task task) async {
-    emit(TasksLoading());
-
-    await Future.delayed(const Duration(seconds: 1));
-
     int index = _tasks.indexWhere((t) => t.id == task.id);
+
     if (index != -1) {
       _tasks[index] = task;
-      emit(TasksLoaded(_tasks));
-    } else {
-      emit(TasksError("Task not found"));
+      final result = await _updateTask(_tasks[index]);
+
+      return result.fold(
+        (exception) => emit(TaskError(exception.message!)),
+        (success) => emit(TasksLoaded(_tasks)),
+      );
     }
+    emit(TaskError("Tarefa não encontrada"));
   }
 }

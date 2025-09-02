@@ -1,8 +1,9 @@
-# 1.0.0 (2025-08-25)
+# 1.0.0 (2025-09-02)
 
 
 ### Features
 
+* **firestore:** integrando o Firestore e o ligando-o a regra de negócio do projeto ([a81bb11](https://github.com/LucasFormigonBR/todyapp/commit/a81bb11666cb92072aed4ac19469cbf21755b2e3))
 * **home/inbox:** criado as funcionalidades de listar, excluir, selecionar uma-a-uma ou varias tarefas simultaneamente ([e5a7014](https://github.com/LucasFormigonBR/todyapp/commit/e5a7014fa600043ba722543a0847119fc8eb038e))
 * **login:** metodo de autenticacao via conta Github ([d5105da](https://github.com/LucasFormigonBR/todyapp/commit/d5105daac31557930407c4412de0dc0cb5441283))
 * **login:** metodo de autenticação via conta Google ([f7fc9d3](https://github.com/LucasFormigonBR/todyapp/commit/f7fc9d3ab31acf9ef1e1eca58cf116dce1d103cb))
