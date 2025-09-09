@@ -157,7 +157,7 @@ class _TaskWidgetState extends State<TaskWidget> {
                     title: Text("Excluir tarefa"),
                     onTap: () {
                       Navigator.of(context).pop();
-                      showModalDeleteTask(widget.index);
+                      showModalDeleteTask(task);
                     },
                   ),
                 ],
@@ -180,10 +180,10 @@ class _TaskWidgetState extends State<TaskWidget> {
     );
   }
 
-  Future<void> showModalDeleteTask(int index) async {
+  Future<void> showModalDeleteTask(Task task) async {
     showDialog(
       context: context,
-      builder: (contextModal) => ModalDeleteTask(index),
+      builder: (contextModal) => ModalDeleteTask(task),
     );
   }
 }

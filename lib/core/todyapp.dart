@@ -30,7 +30,7 @@ class TodyApp extends StatelessWidget {
             sl<UpdateTask>(),
             sl<RemoveTask>(),
             sl<RemoveMultipleTasks>(),
-          ),
+          )..loadTasks(DateTime.now()),
         ),
       ],
       child: MaterialApp.router(

@@ -43,210 +43,156 @@ class _InboxPageState extends State<InboxPage> {
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider(create: (context) => ModeCheckboxCubit()),
-        BlocProvider(create: (context) => TaskSelectionCubit()),
-        BlocProvider(create: (context) => ButtonCubit()),
-      ],
-      child: Builder(
-        builder: (context) {
-          final listTaskCubit = context.read<ListTaskCubit>();
-          final buttonCubit = context.read<ButtonCubit>();
-          final taskSelectionCubit = context.read<TaskSelectionCubit>();
-          final modeCheckboxCubit = context.read<ModeCheckboxCubit>();
+    final listTaskCubit = context.read<ListTaskCubit>();
+    final buttonCubit = context.read<ButtonCubit>();
+    final taskSelectionCubit = context.read<TaskSelectionCubit>();
+    final modeCheckboxCubit = context.read<ModeCheckboxCubit>();
 
-          return SafeArea(
-            child: BlocListener<ListTaskCubit, TaskState>(
-              listenWhen: (previous, current) =>
-                  current is TaskError || current is TaskSuccess,
-              listener: (context, state) {
-                if (state is TaskError) {
-                  NotificationHelper.getAlertNotification(
-                    state.message,
-                    color: Colors.red,
-                  );
-                }
-                if (state is TaskSuccess) {
-                  NotificationHelper.getAlertNotification(
-                    state.message,
-                    color: Colors.green,
-                  );
-                }
-              },
-              child: PaddingWidget(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text("Hoje", style: Theme.of(context).textTheme.titleLarge),
-                    SizedBox(height: 8),
-                    Text(
-                      "Verifique as tarefas a fazer no momento",
-                      style: Theme.of(context).textTheme.labelLarge,
-                    ),
-                    SizedBox(height: 20),
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: BlocBuilder<ModeCheckboxCubit, ModeCheckboxState>(
-                        builder: (context, modeCheckboxState) {
-                          if (modeCheckboxState is ModeCheckboxUpdate) {
-                            if (modeCheckboxState.activate) {
-                              return Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                spacing: 5,
-                                children: [
-                                  ButtonSelectAll(
-                                    onPressed: () {
-                                      taskSelectionCubit.selectAllTasks(
-                                        listTaskCubit.tasks,
-                                      );
-                                      buttonCubit.updateToggleButtonDeleteTasks(
-                                        taskSelectionCubit.tasks.isNotEmpty,
-                                      );
-                                    },
-                                  ),
-                                  ButtonDelete(
-                                    buttonCubit: buttonCubit,
-                                    modeCheckboxCubit: modeCheckboxCubit,
-                                    listTaskCubit: listTaskCubit,
-                                    taskSelectionCubit: taskSelectionCubit,
-                                  ),
-                                ],
-                              );
-                            }
-                            taskSelectionCubit.clearSelectionList();
-                            return ButtonAddTask(
-                              onPressed: () async {
-                                await showModalCreateNewTask();
-                                titleTaskController.clear();
-                                descriptionTaskController.clear();
-                              },
-                            );
-                          }
-                          return SizedBox.shrink();
-                        },
-                      ),
-                    ),
-                    SizedBox(height: 40),
-                    BlocBuilder<ListTaskCubit, TaskState>(
-                      buildWhen: (previous, current) =>
-                          current is! TaskError || current is! TaskSuccess,
-                      builder: (context, state) {
-                        if (state is TasksInitial) {
-                          if (state.tasks.isNotEmpty) {
-                            return Expanded(
-                              child: ListView.separated(
-                                separatorBuilder: (context, index) =>
-                                    SizedBox(height: 16),
-                                itemCount: state.tasks.length,
-                                itemBuilder: (context, index) {
-                                  return InkWell(
-                                    borderRadius: BorderRadius.circular(8),
-                                    onLongPress: () =>
-                                        modeCheckboxCubit.updateCheckboxMode(),
-                                    child: Ink(
-                                      padding: EdgeInsets.all(5),
-                                      decoration: BoxDecoration(
-                                        color: Colors.transparent,
-                                        borderRadius: BorderRadius.circular(10),
-                                      ),
-                                      child: AnimationSelectedTask(
-                                        task: state.tasks[index],
-                                        widget: TaskWidget(
-                                          index: index,
-                                          task: state.tasks[index],
-                                        ),
-                                      ),
-                                    ),
-                                  );
-                                },
-                              ),
-                            );
-                          }
-                          return Expanded(
-                            child: Opacity(
-                              opacity: 0.5,
-                              child: Center(
-                                child: Image.asset(
-                                  ImagesApp.emptyListTasks,
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                            ),
-                          );
-                        }
+    return SafeArea(
+      child: BlocListener<ListTaskCubit, ListTaskState>(
+        listenWhen: (previous, current) =>
+            current is TaskError || current is TaskSuccess,
+        listener: (context, state) {
+          if (state is TaskError) {
+            NotificationHelper.getAlertNotification(
+              state.message,
+              color: Colors.red,
+            );
+          }
+          if (state is TaskSuccess) {
+            NotificationHelper.getAlertNotification(
+              state.message,
+              color: Colors.green,
+            );
+          }
+        },
+        child: PaddingWidget(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text("Hoje", style: Theme.of(context).textTheme.titleLarge),
+              SizedBox(height: 8),
+              Text(
+                "Verifique as tarefas a fazer no momento",
 
-                        if (state is TasksLoading) {
-                          return Expanded(
-                            child: Center(child: CircularProgressIndicator()),
-                          );
-                        }
-
-                        if (state is TasksLoaded) {
-                          if (state.tasks.isEmpty) {
-                            return Expanded(
-                              child: Opacity(
-                                opacity: 0.5,
-                                child: Center(
-                                  child: Column(
-                                    children: [
-                                      Image.asset(
-                                        ImagesApp.emptyListTasks,
-                                        fit: BoxFit.cover,
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            );
-                          }
-                          return Expanded(
-                            child: ListView.separated(
-                              separatorBuilder: (context, index) =>
-                                  SizedBox(height: 16),
-                              itemCount: state.tasks.length,
-                              itemBuilder: (context, index) {
-                                return InkWell(
-                                  borderRadius: BorderRadius.circular(8),
-                                  onLongPress: () =>
-                                      modeCheckboxCubit.updateCheckboxMode(),
-                                  child: Ink(
-                                    padding: EdgeInsets.all(5),
-                                    decoration: BoxDecoration(
-                                      color: Colors.transparent,
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
-                                    child: AnimationSelectedTask(
-                                      task: state.tasks[index],
-                                      widget: TaskWidget(
-                                        index: index,
-                                        task: state.tasks[index],
-                                      ),
-                                    ),
-                                  ),
+                style: Theme.of(context).textTheme.labelLarge,
+              ),
+              SizedBox(height: 20),
+              Align(
+                alignment: Alignment.centerRight,
+                child: BlocBuilder<ModeCheckboxCubit, ModeCheckboxState>(
+                  builder: (context, modeCheckboxState) {
+                    if (modeCheckboxState is ModeCheckboxUpdate) {
+                      if (modeCheckboxState.activate) {
+                        return Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          spacing: 5,
+                          children: [
+                            ButtonSelectAll(
+                              onPressed: () {
+                                taskSelectionCubit.selectAllTasks(
+                                  listTaskCubit.tasks,
+                                );
+                                buttonCubit.updateToggleButtonDeleteTasks(
+                                  taskSelectionCubit.tasks.isNotEmpty,
                                 );
                               },
                             ),
-                          );
-                        }
-
-                        if (state is TasksError) {
-                          return Expanded(
-                            child: Center(
-                              child: Text("Houve um erro: //${state.message}"),
+                            ButtonDelete(
+                              buttonCubit: buttonCubit,
+                              modeCheckboxCubit: modeCheckboxCubit,
+                              listTaskCubit: listTaskCubit,
+                              taskSelectionCubit: taskSelectionCubit,
                             ),
-                          );
-                        }
-
-                        return SizedBox.shrink();
-                      },
-                    ),
-                  ],
+                          ],
+                        );
+                      }
+                      taskSelectionCubit.clearSelectionList();
+                      return ButtonAddTask(
+                        onPressed: () async {
+                          await showModalCreateNewTask();
+                          titleTaskController.clear();
+                          descriptionTaskController.clear();
+                        },
+                      );
+                    }
+                    return SizedBox.shrink();
+                  },
                 ),
               ),
-            ),
-          );
-        },
+              SizedBox(height: 40),
+              BlocBuilder<ListTaskCubit, ListTaskState>(
+                buildWhen: (previous, current) =>
+                    current is! TaskError || current is! TaskSuccess,
+                builder: (context, state) {
+                  if (state is TasksLoading) {
+                    return Expanded(
+                      child: Center(child: CircularProgressIndicator()),
+                    );
+                  }
+
+                  if (state is UpdateTasks) {
+                    if (state.tasks.isEmpty) {
+                      return Expanded(
+                        child: Opacity(
+                          opacity: 0.5,
+                          child: Center(
+                            child: Column(
+                              children: [
+                                Image.asset(
+                                  ImagesApp.emptyListTasks,
+                                  fit: BoxFit.cover,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      );
+                    }
+                    return Expanded(
+                      child: ListView.separated(
+                        separatorBuilder: (context, index) =>
+                            SizedBox(height: 16),
+                        itemCount: state.tasks.length,
+                        itemBuilder: (context, index) {
+                          return InkWell(
+                            borderRadius: BorderRadius.circular(8),
+                            onLongPress: () =>
+                                modeCheckboxCubit.updateCheckboxMode(),
+                            child: Ink(
+                              padding: EdgeInsets.all(5),
+                              decoration: BoxDecoration(
+                                color: Colors.transparent,
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: AnimationSelectedTask(
+                                task: state.tasks[index],
+                                widget: TaskWidget(
+                                  index: index,
+                                  task: state.tasks[index],
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    );
+                  }
+
+                  if (state is TasksError) {
+                    return Expanded(
+                      child: Center(
+                        child: Text("Houve um erro: //${state.message}"),
+                      ),
+                    );
+                  }
+
+                  return SizedBox.shrink();
+                },
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

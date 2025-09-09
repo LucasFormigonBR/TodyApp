@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../domain/entities/task.dart';
 import '../cubit/list_task_cubit.dart';
 
 class ModalDeleteTask extends StatelessWidget {
-  final int index;
-  const ModalDeleteTask(this.index, {super.key});
+  final Task task;
+  const ModalDeleteTask(this.task, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +28,7 @@ class ModalDeleteTask extends StatelessWidget {
                   padding: const EdgeInsets.all(8.0),
                   child: ElevatedButton(
                     onPressed: () async {
-                      await context.read<ListTaskCubit>().removeTask(index);
+                      await context.read<ListTaskCubit>().removeTask(task);
                       if (context.mounted) context.pop();
                     },
 
