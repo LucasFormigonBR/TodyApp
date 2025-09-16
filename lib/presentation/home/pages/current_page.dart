@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:todyapp/presentation/home/cubit/calendar/calendar_tasks_cubit.dart';
 import 'package:todyapp/presentation/home/cubit/screen_cubit.dart';
+import 'package:todyapp/presentation/home/pages/calendar_page.dart';
 
-import '../../../core/configs/theme/styles_app.dart';
+import '../cubit/button_cubit.dart';
+import '../cubit/calendar/calendar_cubit.dart';
+import '../cubit/mode_checkbox_cubit.dart';
+import '../cubit/task_selection_cubit.dart';
 import 'inbox_page.dart';
 
 class CurrentPage extends StatefulWidget {
@@ -14,16 +19,23 @@ class CurrentPage extends StatefulWidget {
 }
 
 class _CurrentPageState extends State<CurrentPage> {
-  final List<Widget> screens = [const InboxPage(), Container(), Container()];
+  final List<Widget> screens = [const InboxPage(), CalendarPage(), Container()];
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<ScreenCubit>(
-      create: (context) => ScreenCubit(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (context) => ScreenCubit()),
+        BlocProvider(create: (context) => ModeCheckboxCubit()),
+        BlocProvider(create: (context) => TaskSelectionCubit()),
+        BlocProvider(create: (context) => ButtonCubit()),
+        BlocProvider(create: (context) => CalendarCubit()),
+        BlocProvider(create: (context) => CalendarTasksCubit()),
+      ],
       child: BlocBuilder<ScreenCubit, int>(
         builder: (context, indexPage) {
           return Scaffold(
-            backgroundColor: StylesApp.greyBackground,
+            backgroundColor: Colors.white,
             body: screens[indexPage],
             bottomNavigationBar: BottomNavigationBar(
               showUnselectedLabels: false,

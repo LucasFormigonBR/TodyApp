@@ -3,35 +3,23 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:todyapp/common/bloc/task/task_cubit.dart';
 
 import 'package:todyapp/core/configs/routes/router.dart';
 import 'package:todyapp/core/configs/theme/styles_app.dart';
-import 'package:todyapp/domain/usecases/add_task.dart';
-import 'package:todyapp/domain/usecases/remove_multiple_tasks.dart';
 
-import '../domain/usecases/get_all_tasks.dart';
-import '../domain/usecases/remove_task.dart';
-import '../domain/usecases/update_task.dart';
 import '../presentation/apresentation/cubit/apresentation_cubit.dart';
-import '../presentation/home/cubit/list_task_cubit.dart';
 import 'service_locator.dart';
 
 class TodyApp extends StatelessWidget {
   const TodyApp({super.key});
 
+  @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (_) => ApresentationCubit()),
-        BlocProvider(
-          create: (_) => ListTaskCubit(
-            sl<AddTask>(),
-            sl<GetAllTasks>(),
-            sl<UpdateTask>(),
-            sl<RemoveTask>(),
-            sl<RemoveMultipleTasks>(),
-          ),
-        ),
+        BlocProvider(create: (_) => sl<TaskCubit>()..getTasks()),
       ],
       child: MaterialApp.router(
         debugShowCheckedModeBanner: false,
@@ -47,10 +35,16 @@ class TodyApp extends StatelessWidget {
           useMaterial3: true,
           scaffoldBackgroundColor: Colors.white,
           fontFamily: GoogleFonts.barlow().fontFamily,
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.teal),
+          colorScheme: ColorScheme.fromSeed(seedColor: Color(0xFF24A19C)),
           appBarTheme: const AppBarTheme(backgroundColor: Colors.transparent),
           bottomNavigationBarTheme: BottomNavigationBarThemeData(
             backgroundColor: Colors.white,
+          ),
+          buttonTheme: ButtonThemeData(
+            buttonColor: Color(0xFF1C967E),
+            hoverColor: Color(0xFF096C68),
+            focusColor: Color(0xFF24A19C),
+            disabledColor: Color(0xFFF2F9F9),
           ),
           textTheme: TextTheme(
             titleLarge: TextStyle(fontWeight: FontWeight.bold),
@@ -84,8 +78,8 @@ class TodyApp extends StatelessWidget {
           elevatedButtonTheme: ElevatedButtonThemeData(
             style: ElevatedButton.styleFrom(
               textStyle: TextStyle(color: Colors.white),
-              backgroundColor: Colors.teal,
-              disabledBackgroundColor: const Color(0xFFCBF1F0),
+              backgroundColor: Color(0xFF1C967E),
+              disabledBackgroundColor: const Color(0xFFF2F9F9),
               foregroundColor: Colors.white,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(16),
@@ -96,6 +90,11 @@ class TodyApp extends StatelessWidget {
           iconButtonTheme: IconButtonThemeData(
             style: IconButton.styleFrom(
               disabledForegroundColor: StylesApp.disableButton,
+            ),
+          ),
+          textButtonTheme: TextButtonThemeData(
+            style: ButtonStyle(
+              backgroundColor: WidgetStateProperty.all(const Color(0xFFF2F9F9)),
             ),
           ),
           dialogTheme: DialogThemeData(backgroundColor: Colors.white),

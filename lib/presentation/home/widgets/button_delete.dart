@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:todyapp/common/bloc/task/task_cubit.dart';
 import 'package:todyapp/presentation/home/cubit/mode_checkbox_cubit.dart';
-import 'package:todyapp/presentation/home/cubit/list_task_cubit.dart';
 import 'package:todyapp/presentation/home/cubit/task_selection_cubit.dart';
 
 import '../cubit/button_cubit.dart';
 import '../cubit/button_state.dart';
 
 class ButtonDelete extends StatelessWidget {
-  final ListTaskCubit listTaskCubit;
+  final TaskCubit taskCubit;
   final ButtonCubit buttonCubit;
   final TaskSelectionCubit taskSelectionCubit;
   final ModeCheckboxCubit modeCheckboxCubit;
   const ButtonDelete({
     super.key,
-    required this.listTaskCubit,
+    required this.taskCubit,
     required this.buttonCubit,
     required this.taskSelectionCubit,
     required this.modeCheckboxCubit,
@@ -44,7 +44,7 @@ class ButtonDelete extends StatelessWidget {
                   ),
             onPressed: buttonState.isActive
                 ? () async {
-                    await listTaskCubit.removeTasks(taskSelectionCubit.tasks);
+                    await taskCubit.removeTasks(taskSelectionCubit.tasks);
                     taskSelectionCubit.clearSelectionList();
                     buttonCubit.updateToggleButtonDeleteTasks(
                       taskSelectionCubit.tasks.isNotEmpty,

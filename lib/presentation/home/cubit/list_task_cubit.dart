@@ -1,18 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:todyapp/core/configs/functions/functions_date.dart';
 import 'package:todyapp/domain/entities/task.dart';
-import 'package:todyapp/domain/usecases/add_task.dart';
-import 'package:todyapp/presentation/home/cubit/task_state.dart';
+import 'package:todyapp/domain/usecases/task/add_task.dart';
+import 'package:todyapp/presentation/home/cubit/list_task_state.dart';
 
-import '../../../domain/usecases/get_all_tasks.dart';
-import '../../../domain/usecases/remove_multiple_tasks.dart';
+import '../../../domain/usecases/task/get_all_tasks.dart';
+import '../../../domain/usecases/task/remove_multiple_tasks.dart';
 import '../../../domain/usecases/remove_task.dart';
-import '../../../domain/usecases/update_task.dart';
+import '../../../domain/usecases/task/update_task.dart';
 
-class ListTaskCubit extends Cubit<TaskState> {
+class ListTaskCubit extends Cubit<ListTaskState> {
+  final _dateToday = formatDate(DateTime.now());
+  String get dateToday => _dateToday;
+
   List<Task> _tasks = [];
   List<Task> get tasks => _tasks;
+
   final AddTask _addTask;
   final GetAllTasks _getAllTasks;
   final UpdateTask _updateTask;
@@ -25,11 +30,9 @@ class ListTaskCubit extends Cubit<TaskState> {
     this._updateTask,
     this._removeTask,
     this._removeMultipleTasks,
-  ) : super(TasksInitial([])) {
-    loadTasks();
-  }
+  ) : super(TasksInitial([]));
 
-  Future<void> loadTasks() async {
+  Future<void> loadTasks(DateTime date) async {
     emit(TasksLoading());
 
     final result = await _getAllTasks();
@@ -40,9 +43,16 @@ class ListTaskCubit extends Cubit<TaskState> {
       },
       (tasks) {
         _tasks = tasks;
-        emit(TasksLoaded(_tasks));
+        filterTasksByPeriod(date);
       },
     );
+  }
+
+  void filterTasksByPeriod(DateTime date) {
+    final selectedDate = formatDate(date);
+    final tasksFiltered = _tasks.where((t) => t.date == selectedDate).toList();
+
+    emit(UpdateTasks(tasksFiltered));
   }
 
   Future<void> addTask(Task task) async {
@@ -66,20 +76,22 @@ class ListTaskCubit extends Cubit<TaskState> {
       },
       (idNewTask) {
         task = task.copyWith(id: idNewTask);
-        _tasks.add(task);
-        emit(TasksLoaded(_tasks));
+        _tasks = [..._tasks, task];
+
+        filterTasksByPeriod(DateTime.now());
       },
     );
   }
 
-  Future<void> removeTask(int index) async {
-    final result = await _removeTask(_tasks[index]);
+  Future<void> removeTask(Task task) async {
+    final result = await _removeTask(task);
 
     return result.fold((exception) => emit(TaskError(exception.message!)), (
       success,
     ) {
-      _tasks.removeAt(index);
-      emit(TasksLoaded(_tasks));
+      _tasks.remove(task);
+
+      filterTasksByPeriod(DateTime.now());
     });
   }
 
@@ -94,7 +106,7 @@ class ListTaskCubit extends Cubit<TaskState> {
 
     result.fold(
       (exception) => emit(TaskError(exception.message!)),
-      (success) => emit(TasksLoaded(_tasks)),
+      (success) => filterTasksByPeriod(DateTime.now()),
     );
   }
 
@@ -107,7 +119,7 @@ class ListTaskCubit extends Cubit<TaskState> {
 
       return result.fold(
         (exception) => emit(TaskError(exception.message!)),
-        (success) => emit(TasksLoaded(_tasks)),
+        (success) => filterTasksByPeriod(DateTime.now()),
       );
     }
     emit(TaskError("Tarefa não encontrada"));
