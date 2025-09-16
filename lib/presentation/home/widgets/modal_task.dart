@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
+import 'package:todyapp/common/bloc/task/task_cubit.dart';
 
 import '../../../core/configs/theme/styles_app.dart';
 import '../../../domain/entities/task.dart';
 import '../cubit/button_cubit.dart';
 import '../cubit/button_state.dart';
-import '../cubit/list_task_cubit.dart';
 import '../ui_models/ui_priority.dart';
 
 class ModalTask extends StatefulWidget {
@@ -139,8 +139,8 @@ class _ModalTaskState extends State<ModalTask> {
                               onPressed: state.isActive
                                   ? () async {
                                       if (formKey.currentState!.validate()) {
-                                        final listTaskCubit = context
-                                            .read<ListTaskCubit>();
+                                        final taskCubit = context
+                                            .read<TaskCubit>();
 
                                         newTask = newTask.copyWith(
                                           title: titleTaskController.text,
@@ -149,13 +149,13 @@ class _ModalTaskState extends State<ModalTask> {
                                         );
 
                                         if (widget.isNewTask) {
-                                          await listTaskCubit.addTask(newTask);
+                                          await taskCubit.addTask(newTask);
                                           if (context.mounted) {
                                             context.pop();
                                             return;
                                           }
                                         }
-                                        await listTaskCubit.editTask(newTask);
+                                        await taskCubit.editTask(newTask);
                                         if (context.mounted) context.pop();
                                       }
                                     }

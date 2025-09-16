@@ -4,7 +4,6 @@ import 'package:todyapp/presentation/home/cubit/calendar/calendar_tasks_cubit.da
 import 'package:todyapp/presentation/home/cubit/screen_cubit.dart';
 import 'package:todyapp/presentation/home/pages/calendar_page.dart';
 
-import '../../../core/configs/theme/styles_app.dart';
 import '../cubit/button_cubit.dart';
 import '../cubit/calendar/calendar_cubit.dart';
 import '../cubit/mode_checkbox_cubit.dart';
@@ -36,7 +35,7 @@ class _CurrentPageState extends State<CurrentPage> {
       child: BlocBuilder<ScreenCubit, int>(
         builder: (context, indexPage) {
           return Scaffold(
-            backgroundColor: StylesApp.greyBackground,
+            backgroundColor: Colors.white,
             body: screens[indexPage],
             bottomNavigationBar: BottomNavigationBar(
               showUnselectedLabels: false,

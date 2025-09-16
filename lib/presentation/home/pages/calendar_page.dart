@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:todyapp/common/bloc/task/task_cubit.dart';
+import 'package:todyapp/common/bloc/task/task_state.dart';
 import 'package:todyapp/core/configs/app_config.dart';
 import 'package:todyapp/core/service_locator.dart';
 
 import 'package:todyapp/presentation/home/cubit/calendar/calendar_cubit.dart';
 import 'package:todyapp/presentation/home/cubit/calendar/calendar_state.dart';
-import 'package:todyapp/presentation/home/cubit/calendar/calendar_tasks_cubit.dart';
-import 'package:todyapp/presentation/home/cubit/calendar/calendar_tasks_state.dart';
-import 'package:todyapp/presentation/home/cubit/task_state.dart';
 
 import '../../../core/configs/assets/images_app.dart';
 import '../../../core/configs/functions/functions_date.dart';
+import '../../../core/configs/functions/functions_task.dart';
 import '../../../core/configs/theme/styles_app.dart';
-import '../cubit/list_task_cubit.dart';
+import '../../../domain/entities/task.dart';
+import '../widgets/modal_delete_task.dart';
+import '../widgets/modal_task.dart';
 
 class CalendarPage extends StatefulWidget {
   const CalendarPage({super.key});
@@ -24,20 +26,20 @@ class CalendarPage extends StatefulWidget {
 class _CalendarPageState extends State<CalendarPage> {
   final configDate = sl<AppConfig>();
   late final CalendarCubit calendarCubit;
-  late final ListTaskCubit listTaskCubit;
-  late final CalendarTasksCubit calendarTasksCubit;
+  late final TaskCubit taskCubit;
+  List<Task> tasks = [];
 
   @override
   void initState() {
     super.initState();
     calendarCubit = context.read<CalendarCubit>();
-    listTaskCubit = context.read<ListTaskCubit>();
-    calendarTasksCubit = context.read<CalendarTasksCubit>();
-    listTaskCubit.filterTasksByPeriod(calendarCubit.selectedDate);
+    taskCubit = context.read<TaskCubit>();
   }
 
   @override
   Widget build(BuildContext context) {
+    taskCubit.filterTasksByDate(calendarCubit.selectedDate);
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -48,7 +50,6 @@ class _CalendarPageState extends State<CalendarPage> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Cabeçalho
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
             child: Row(
@@ -57,11 +58,6 @@ class _CalendarPageState extends State<CalendarPage> {
                 BlocBuilder<CalendarCubit, CalendarState>(
                   builder: (context, state) {
                     return TextButton(
-                      style: TextButton.styleFrom(
-                        elevation: 5,
-                        shadowColor: Colors.grey.shade100,
-                        backgroundColor: Colors.teal.shade100,
-                      ),
                       child: Row(
                         children: [
                           Icon(Icons.calendar_month_outlined),
@@ -86,8 +82,6 @@ class _CalendarPageState extends State<CalendarPage> {
               ],
             ),
           ),
-
-          // Calendário horizontal
           SizedBox(
             height: 90,
             child: BlocBuilder<CalendarCubit, CalendarState>(
@@ -155,27 +149,40 @@ class _CalendarPageState extends State<CalendarPage> {
           ),
 
           const SizedBox(height: 16),
-          BlocBuilder<CalendarTasksCubit, CalendarTasksState>(
+          BlocBuilder<TaskCubit, TaskState>(
             builder: (context, state) {
-              if (state is CalendarGetTasks) {
-                if (state.tasks.isEmpty) {
+              if (state is TasksUpdateState) {
+                tasks = filterTasksByDate(
+                  tasks: state.tasks,
+                  date: calendarCubit.selectedDate,
+                );
+                if (tasks.isEmpty) {
                   return SizedBox.shrink();
                 }
-                return IconButton.filled(
-                  onPressed: () {},
-                  icon: Icon(Icons.filter_alt),
-                );
+                // return Padding(
+                //   padding: const EdgeInsets.only(right: 16),
+                //   child: Align(
+                //     alignment: AlignmentGeometry.centerRight,
+                //     child: IconButton.filled(
+                //       onPressed: () => filterModal(),
+                //       icon: Icon(Icons.filter_alt),
+                //     ),
+                //   ),
+                // );
               }
               return SizedBox.shrink();
             },
           ),
-
-          // Lista de eventos
           Expanded(
-            child: BlocBuilder<ListTaskCubit, ListTaskState>(
+            child: BlocBuilder<TaskCubit, TaskState>(
               builder: (context, state) {
-                if (state is UpdateTasks) {
-                  if (state.tasks.isEmpty) {
+                if (state is TasksLoadingState) {
+                  return Expanded(
+                    child: Center(child: CircularProgressIndicator()),
+                  );
+                }
+                if (state is TasksUpdateState) {
+                  if (tasks.isEmpty) {
                     return Opacity(
                       opacity: 0.5,
                       child: Center(
@@ -186,11 +193,12 @@ class _CalendarPageState extends State<CalendarPage> {
                       ),
                     );
                   }
+
                   return ListView.separated(
-                    itemCount: state.tasks.length,
+                    itemCount: tasks.length,
                     separatorBuilder: (_, _) => const Divider(),
                     itemBuilder: (context, index) {
-                      final task = state.tasks[index];
+                      final task = tasks[index];
                       return ListTile(
                         contentPadding: const EdgeInsets.symmetric(
                           horizontal: 16,
@@ -200,9 +208,20 @@ class _CalendarPageState extends State<CalendarPage> {
                           Icons.radio_button_checked,
                           color: task.priority.color,
                         ),
-                        title: Text(
-                          task.title,
-                          style: const TextStyle(fontWeight: FontWeight.bold),
+                        title: Row(
+                          children: [
+                            Text(
+                              task.title,
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            Spacer(),
+                            IconButton(
+                              onPressed: () => showModalOptionsTask(task),
+                              icon: Icon(Icons.more_horiz_outlined),
+                            ),
+                          ],
                         ),
                         subtitle: Row(
                           children: [
@@ -293,6 +312,68 @@ class _CalendarPageState extends State<CalendarPage> {
 
   void updateListTasks(DateTime selectedDate) {
     calendarCubit.saveSelectedDate(selectedDate);
-    listTaskCubit.filterTasksByPeriod(calendarCubit.selectedDate);
+    taskCubit.filterTasksByDate(calendarCubit.selectedDate);
   }
+
+  Future<void> showModalOptionsTask(Task task) async {
+    return await showDialog(
+      context: context,
+      builder: (context) => Dialog(
+        child: Padding(
+          padding: EdgeInsets.all(16),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                'Opções',
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
+              Divider(color: Colors.grey[300]),
+              ListView(
+                shrinkWrap: true,
+                children: [
+                  ListTile(
+                    leading: Icon(Icons.edit, color: Colors.deepOrange),
+                    title: Text("Editar informações"),
+                    onTap: () {
+                      Navigator.of(context).pop();
+                      showModalEditTask(task);
+                    },
+                  ),
+                  ListTile(
+                    leading: Icon(Icons.delete, color: Colors.red),
+                    title: Text("Excluir tarefa"),
+                    onTap: () {
+                      Navigator.of(context).pop();
+                      showModalDeleteTask(task);
+                    },
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Future<void> showModalEditTask(Task task) async {
+    showModalBottomSheet(
+      context: context,
+      builder: (contextModal) =>
+          ModalTask(contextModal: contextModal, isNewTask: false, task: task),
+    );
+  }
+
+  Future<void> showModalDeleteTask(Task task) async {
+    showDialog(
+      context: context,
+      builder: (contextModal) => ModalDeleteTask(task),
+    );
+  }
+
+  // Future<void> filterModal() async {
+  //   showDialog(context: context, builder: (context) => FilterModalWidget());
+  // }
 }

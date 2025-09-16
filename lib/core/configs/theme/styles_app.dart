@@ -3,6 +3,8 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 
 class StylesApp {
+  static const Color defaultColor = Color(0xFF24A19C);
+
   /// Structure Styles
   static const defaultPaddingHorizontal = EdgeInsets.symmetric(horizontal: 16);
 

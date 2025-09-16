@@ -3,13 +3,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:todyapp/core/configs/functions/functions_date.dart';
 import 'package:todyapp/domain/entities/task.dart';
-import 'package:todyapp/domain/usecases/add_task.dart';
-import 'package:todyapp/presentation/home/cubit/task_state.dart';
+import 'package:todyapp/domain/usecases/task/add_task.dart';
+import 'package:todyapp/presentation/home/cubit/list_task_state.dart';
 
-import '../../../domain/usecases/get_all_tasks.dart';
-import '../../../domain/usecases/remove_multiple_tasks.dart';
+import '../../../domain/usecases/task/get_all_tasks.dart';
+import '../../../domain/usecases/task/remove_multiple_tasks.dart';
 import '../../../domain/usecases/remove_task.dart';
-import '../../../domain/usecases/update_task.dart';
+import '../../../domain/usecases/task/update_task.dart';
 
 class ListTaskCubit extends Cubit<ListTaskState> {
   final _dateToday = formatDate(DateTime.now());

@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:todyapp/common/bloc/task/task_cubit.dart';
+import 'package:todyapp/common/bloc/task/task_state.dart';
 import 'package:todyapp/common/helpers/notification.dart';
 import 'package:todyapp/presentation/home/cubit/mode_checkbox_cubit.dart';
 import 'package:todyapp/presentation/home/cubit/mode_checkbox_state.dart';
-import 'package:todyapp/presentation/home/cubit/task_state.dart';
 import 'package:todyapp/presentation/home/ui_models/ui_priority.dart';
 import 'package:todyapp/presentation/home/widgets/animation_selected_task.dart';
 import 'package:todyapp/presentation/home/widgets/modal_task.dart';
@@ -11,10 +12,10 @@ import 'package:todyapp/presentation/home/widgets/button_select_all.dart';
 import 'package:todyapp/presentation/home/widgets/task_widget.dart';
 
 import '../../../core/configs/assets/images_app.dart';
+import '../../../core/configs/functions/functions_task.dart';
 import '../../../domain/entities/task.dart';
 import '../../../common/widgets/padding_widget.dart';
 import '../cubit/button_cubit.dart';
-import '../cubit/list_task_cubit.dart';
 import '../cubit/task_selection_cubit.dart';
 import '../widgets/button_add_task.dart';
 import '../widgets/button_delete.dart';
@@ -33,6 +34,7 @@ class _InboxPageState extends State<InboxPage> {
       TextEditingController();
 
   final List<UiPriority> priorities = UiPriority.values;
+  List<Task> todayTasks = [];
 
   @override
   void dispose() {
@@ -43,23 +45,25 @@ class _InboxPageState extends State<InboxPage> {
 
   @override
   Widget build(BuildContext context) {
-    final listTaskCubit = context.read<ListTaskCubit>();
+    final taskCubit = context.read<TaskCubit>();
     final buttonCubit = context.read<ButtonCubit>();
     final taskSelectionCubit = context.read<TaskSelectionCubit>();
     final modeCheckboxCubit = context.read<ModeCheckboxCubit>();
 
+    taskCubit.filterTasksByDate(DateTime.now());
+
     return SafeArea(
-      child: BlocListener<ListTaskCubit, ListTaskState>(
+      child: BlocListener<TaskCubit, TaskState>(
         listenWhen: (previous, current) =>
-            current is TaskError || current is TaskSuccess,
+            current is TaskErrorState || current is TaskSuccessState,
         listener: (context, state) {
-          if (state is TaskError) {
+          if (state is TaskErrorState) {
             NotificationHelper.getAlertNotification(
               state.message,
               color: Colors.red,
             );
           }
-          if (state is TaskSuccess) {
+          if (state is TaskSuccessState) {
             NotificationHelper.getAlertNotification(
               state.message,
               color: Colors.green,
@@ -90,9 +94,7 @@ class _InboxPageState extends State<InboxPage> {
                           children: [
                             ButtonSelectAll(
                               onPressed: () {
-                                taskSelectionCubit.selectAllTasks(
-                                  listTaskCubit.tasks,
-                                );
+                                taskSelectionCubit.selectAllTasks(todayTasks);
                                 buttonCubit.updateToggleButtonDeleteTasks(
                                   taskSelectionCubit.tasks.isNotEmpty,
                                 );
@@ -101,7 +103,7 @@ class _InboxPageState extends State<InboxPage> {
                             ButtonDelete(
                               buttonCubit: buttonCubit,
                               modeCheckboxCubit: modeCheckboxCubit,
-                              listTaskCubit: listTaskCubit,
+                              taskCubit: taskCubit,
                               taskSelectionCubit: taskSelectionCubit,
                             ),
                           ],
@@ -121,18 +123,19 @@ class _InboxPageState extends State<InboxPage> {
                 ),
               ),
               SizedBox(height: 40),
-              BlocBuilder<ListTaskCubit, ListTaskState>(
+              BlocBuilder<TaskCubit, TaskState>(
                 buildWhen: (previous, current) =>
-                    current is! TaskError || current is! TaskSuccess,
+                    current is! Error || current is! TaskSuccessState,
                 builder: (context, state) {
-                  if (state is TasksLoading) {
+                  if (state is TasksLoadingState) {
                     return Expanded(
                       child: Center(child: CircularProgressIndicator()),
                     );
                   }
 
-                  if (state is UpdateTasks) {
-                    if (state.tasks.isEmpty) {
+                  if (state is TasksUpdateState) {
+                    todayTasks = filterTasksByToday(tasks: state.tasks);
+                    if (todayTasks.isEmpty) {
                       return Expanded(
                         child: Opacity(
                           opacity: 0.5,
@@ -149,11 +152,12 @@ class _InboxPageState extends State<InboxPage> {
                         ),
                       );
                     }
+
                     return Expanded(
                       child: ListView.separated(
                         separatorBuilder: (context, index) =>
                             SizedBox(height: 16),
-                        itemCount: state.tasks.length,
+                        itemCount: todayTasks.length,
                         itemBuilder: (context, index) {
                           return InkWell(
                             borderRadius: BorderRadius.circular(8),
@@ -166,10 +170,10 @@ class _InboxPageState extends State<InboxPage> {
                                 borderRadius: BorderRadius.circular(10),
                               ),
                               child: AnimationSelectedTask(
-                                task: state.tasks[index],
+                                task: todayTasks[index],
                                 widget: TaskWidget(
                                   index: index,
-                                  task: state.tasks[index],
+                                  task: todayTasks[index],
                                 ),
                               ),
                             ),
@@ -179,7 +183,7 @@ class _InboxPageState extends State<InboxPage> {
                     );
                   }
 
-                  if (state is TasksError) {
+                  if (state is TaskErrorState) {
                     return Expanded(
                       child: Center(
                         child: Text("Houve um erro: //${state.message}"),
