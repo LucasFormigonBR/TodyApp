@@ -1,10 +1,10 @@
 import 'package:bloc/bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:todyapp/domain/usecases/authenticate_with_github.dart';
+import 'package:todyapp/domain/usecases/login/authenticate_with_github.dart';
 import 'package:todyapp/presentation/login/cubit/login_state.dart';
 
 import '../../../core/service_locator.dart';
-import '../../../domain/usecases/authenticate_with_google.dart';
+import '../../../domain/usecases/login/authenticate_with_google.dart';
 
 class LoginCubit extends Cubit<LoginState> {
   final AuthenticateWithGoogle _initializeAuthenticateWithGoogle;

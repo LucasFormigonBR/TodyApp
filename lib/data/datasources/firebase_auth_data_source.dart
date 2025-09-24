@@ -2,13 +2,16 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:todyapp/core/configs/constants/firebase_tokens.dart';
 
+import '../../core/configs/app_config.dart';
 import '../../core/service_locator.dart';
 
 class FirebaseAuthDataSource {
   final FirebaseAuth _firebaseAuth;
-  final GoogleSignIn _googleSignIn = sl<GoogleSignIn>();
+  final GoogleSignIn _googleSignIn;
 
-  FirebaseAuthDataSource(this._firebaseAuth);
+  FirebaseAuthDataSource(this._firebaseAuth, this._googleSignIn);
+
+  final appConfig = sl<AppConfig>();
 
   Future<void> sendLinkEmail(String email) async {
     try {
@@ -50,6 +53,21 @@ class FirebaseAuthDataSource {
       throw FirebaseAuthException(code: e.code, message: e.message);
     } catch (e) {
       throw Exception('Erro ao autenticar com o Github: $e');
+    }
+  }
+
+  Future<void> signOut() async {
+    try {
+      await _firebaseAuth.signOut();
+      await appConfig.signOut();
+    } on FirebaseException catch (e) {
+      throw FirebaseException(
+        plugin: 'firebase-authentication',
+        code: e.code,
+        message: e.message,
+      );
+    } catch (e) {
+      throw Exception('Houve algum erro desconhecido: $e');
     }
   }
 }

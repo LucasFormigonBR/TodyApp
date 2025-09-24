@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:todyapp/common/bloc/task/task_cubit.dart';
 import 'package:todyapp/domain/entities/task.dart';
 import 'package:todyapp/presentation/home/cubit/mode_checkbox_cubit.dart';
 import 'package:todyapp/presentation/home/cubit/mode_checkbox_state.dart';
@@ -175,15 +176,19 @@ class _TaskWidgetState extends State<TaskWidget> {
 
     showModalBottomSheet(
       context: context,
-      builder: (contextModal) =>
-          ModalTask(contextModal: contextModal, isNewTask: false, task: task),
+      builder: (contextModal) => ModalTask(
+        taskCubit: context.read<TaskCubit>(),
+        isNewTask: false,
+        task: task,
+      ),
     );
   }
 
   Future<void> showModalDeleteTask(Task task) async {
     showDialog(
       context: context,
-      builder: (contextModal) => ModalDeleteTask(task),
+      builder: (contextModal) =>
+          ModalDeleteTask(taskCubit: context.read<TaskCubit>(), task: task),
     );
   }
 }

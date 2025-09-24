@@ -7,18 +7,20 @@ import 'package:todyapp/common/bloc/task/task_cubit.dart';
 import 'package:todyapp/core/configs/app_config.dart';
 import 'package:todyapp/data/repositories/task_repository_impl.dart';
 import 'package:todyapp/domain/repositories/task_repository.dart';
-import 'package:todyapp/domain/usecases/authenticate_with_github.dart';
+import 'package:todyapp/domain/usecases/login/authenticate_with_github.dart';
+import 'package:todyapp/domain/usecases/login/sign_out.dart';
 import 'package:todyapp/domain/usecases/task/get_all_tasks.dart';
 import 'package:todyapp/domain/usecases/task/add_task.dart';
-import 'package:todyapp/domain/usecases/remove_task.dart';
+import 'package:todyapp/domain/usecases/task/remove_task.dart';
 
 import '../data/datasources/firebase_auth_data_source.dart';
 import '../data/repositories/auth_repository_impl.dart';
 import '../domain/repositories/auth_repository.dart';
-import '../domain/usecases/authenticate_with_google.dart';
+import '../domain/usecases/login/authenticate_with_google.dart';
 import '../domain/usecases/task/remove_multiple_tasks.dart';
-import '../domain/usecases/send_ink_to_email.dart';
+import '../domain/usecases/login/send_ink_to_email.dart';
 import '../domain/usecases/task/update_task.dart';
+import '../presentation/home/cubit/profile/profile_cubit.dart';
 import '../presentation/login/cubit/email_cubit.dart';
 import '../presentation/login/cubit/login_cubit.dart';
 
@@ -35,7 +37,7 @@ Future<void> initializeDependencies() async {
   sl.registerLazySingleton<FirebaseAuth>(() => FirebaseAuth.instance);
   sl.registerLazySingleton<FirebaseFirestore>(() => FirebaseFirestore.instance);
   sl.registerLazySingleton<FirebaseAuthDataSource>(
-    () => FirebaseAuthDataSource(sl()),
+    () => FirebaseAuthDataSource(sl(), sl()),
   );
 
   //Shared Preferences
@@ -61,9 +63,11 @@ Future<void> initializeDependencies() async {
   sl.registerLazySingleton<RemoveMultipleTasks>(
     () => RemoveMultipleTasks(sl()),
   );
+  sl.registerLazySingleton<SignOut>(() => SignOut(sl()));
 
   // Cubits
   sl.registerFactory<LoginCubit>(() => LoginCubit(sl(), sl()));
   sl.registerFactory<EmailCubit>(() => EmailCubit(sl()));
   sl.registerFactory<TaskCubit>(() => TaskCubit(sl(), sl(), sl(), sl()));
+  sl.registerFactory<ProfileCubit>(() => ProfileCubit(sl()));
 }

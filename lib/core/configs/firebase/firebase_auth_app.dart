@@ -34,8 +34,8 @@ class FirebaseAuthApp {
         log(
           "Usuário autenticado com sucesso! E-mail do usuário: $emailAddress",
         );
-
-        prefs.setBool('authenticated', true);
+        await prefs.remove('user_email');
+        await prefs.setBool('authenticated', true);
 
         return true;
       }

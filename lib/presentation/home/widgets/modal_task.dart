@@ -11,14 +11,14 @@ import '../cubit/button_state.dart';
 import '../ui_models/ui_priority.dart';
 
 class ModalTask extends StatefulWidget {
+  final TaskCubit taskCubit;
   final Task task;
   final bool isNewTask;
-  final BuildContext contextModal;
 
   const ModalTask({
     super.key,
+    required this.taskCubit,
     required this.task,
-    required this.contextModal,
     required this.isNewTask,
   });
 
@@ -45,12 +45,12 @@ class _ModalTaskState extends State<ModalTask> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => ButtonCubit(),
+  Widget build(BuildContext buildContext) {
+    return MultiBlocProvider(
+      providers: [BlocProvider(create: (_) => ButtonCubit())],
       child: Builder(
-        builder: (builderContext) {
-          final buttonCubit = BlocProvider.of<ButtonCubit>(builderContext);
+        builder: (context) {
+          final buttonCubit = context.read<ButtonCubit>();
 
           if (titleTaskController.text.isNotEmpty) {
             buttonCubit.updateToggleButtonSend(true);
@@ -58,7 +58,7 @@ class _ModalTaskState extends State<ModalTask> {
 
           return Padding(
             padding: EdgeInsets.only(
-              bottom: MediaQuery.of(widget.contextModal).viewInsets.bottom,
+              bottom: MediaQuery.of(context).viewInsets.bottom,
               top: 16,
               left: 16,
               right: 16,
@@ -131,7 +131,7 @@ class _ModalTaskState extends State<ModalTask> {
                       ),
                       Spacer(),
                       BlocBuilder<ButtonCubit, ButtonState>(
-                        builder: (context, state) {
+                        builder: (_, state) {
                           if (state is ButtonToggleSendTask) {
                             return IconButton(
                               icon: Icon(Icons.send),
@@ -139,9 +139,6 @@ class _ModalTaskState extends State<ModalTask> {
                               onPressed: state.isActive
                                   ? () async {
                                       if (formKey.currentState!.validate()) {
-                                        final taskCubit = context
-                                            .read<TaskCubit>();
-
                                         newTask = newTask.copyWith(
                                           title: titleTaskController.text,
                                           description:
@@ -149,14 +146,17 @@ class _ModalTaskState extends State<ModalTask> {
                                         );
 
                                         if (widget.isNewTask) {
-                                          await taskCubit.addTask(newTask);
-                                          if (context.mounted) {
-                                            context.pop();
-                                            return;
-                                          }
+                                          context.pop();
+                                          await widget.taskCubit.addTask(
+                                            newTask,
+                                          );
+
+                                          return;
                                         }
-                                        await taskCubit.editTask(newTask);
-                                        if (context.mounted) context.pop();
+                                        context.pop();
+                                        await widget.taskCubit.editTask(
+                                          newTask,
+                                        );
                                       }
                                     }
                                   : null,

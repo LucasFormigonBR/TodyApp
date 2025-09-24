@@ -206,8 +206,11 @@ class _InboxPageState extends State<InboxPage> {
 
     await showModalBottomSheet(
       context: context,
-      builder: (contextModal) =>
-          ModalTask(contextModal: contextModal, task: newTask, isNewTask: true),
+      builder: (contextModal) => ModalTask(
+        taskCubit: context.read<TaskCubit>(),
+        task: newTask,
+        isNewTask: true,
+      ),
     );
   }
 }

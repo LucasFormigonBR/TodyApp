@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 
-import '../../../domain/usecases/send_ink_to_email.dart';
+import '../../../domain/usecases/login/send_ink_to_email.dart';
 import 'email_state.dart';
 
 class EmailCubit extends Cubit<EmailState> {

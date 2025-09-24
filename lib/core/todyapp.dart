@@ -3,24 +3,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:todyapp/common/bloc/task/task_cubit.dart';
-
 import 'package:todyapp/core/configs/routes/router.dart';
 import 'package:todyapp/core/configs/theme/styles_app.dart';
 
 import '../presentation/apresentation/cubit/apresentation_cubit.dart';
-import 'service_locator.dart';
 
 class TodyApp extends StatelessWidget {
   const TodyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider(create: (_) => ApresentationCubit()),
-        BlocProvider(create: (_) => sl<TaskCubit>()..getTasks()),
-      ],
+    return BlocProvider(
+      create: (context) => ApresentationCubit(),
       child: MaterialApp.router(
         debugShowCheckedModeBanner: false,
         builder: FlashyFlushbarProvider.init(),

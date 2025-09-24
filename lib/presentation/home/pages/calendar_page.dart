@@ -159,16 +159,6 @@ class _CalendarPageState extends State<CalendarPage> {
                 if (tasks.isEmpty) {
                   return SizedBox.shrink();
                 }
-                // return Padding(
-                //   padding: const EdgeInsets.only(right: 16),
-                //   child: Align(
-                //     alignment: AlignmentGeometry.centerRight,
-                //     child: IconButton.filled(
-                //       onPressed: () => filterModal(),
-                //       icon: Icon(Icons.filter_alt),
-                //     ),
-                //   ),
-                // );
               }
               return SizedBox.shrink();
             },
@@ -361,15 +351,19 @@ class _CalendarPageState extends State<CalendarPage> {
   Future<void> showModalEditTask(Task task) async {
     showModalBottomSheet(
       context: context,
-      builder: (contextModal) =>
-          ModalTask(contextModal: contextModal, isNewTask: false, task: task),
+      builder: (contextModal) => ModalTask(
+        taskCubit: context.read<TaskCubit>(),
+        isNewTask: false,
+        task: task,
+      ),
     );
   }
 
   Future<void> showModalDeleteTask(Task task) async {
     showDialog(
       context: context,
-      builder: (contextModal) => ModalDeleteTask(task),
+      builder: (contextModal) =>
+          ModalDeleteTask(taskCubit: context.read<TaskCubit>(), task: task),
     );
   }
 

@@ -1,18 +1,18 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:todyapp/core/configs/app_config.dart';
 import 'package:todyapp/data/models/task_model.dart';
 
 import '../../core/service_locator.dart';
 
 class TaskDataSource {
   final _db = sl<FirebaseFirestore>();
-  final uid = sl<SharedPreferences>().getString('uid');
+  final authenticatedUser = sl<AppConfig>();
 
   Future<String> add(TaskModel task) async {
     try {
       final doc = await _db
           .collection('users')
-          .doc(uid)
+          .doc(authenticatedUser.uid)
           .collection('tasks')
           .add(task.toJson());
 
@@ -26,7 +26,7 @@ class TaskDataSource {
     try {
       final querySnapshots = await _db
           .collection('users')
-          .doc(uid)
+          .doc(authenticatedUser.uid)
           .collection('tasks')
           .get();
 
@@ -44,7 +44,7 @@ class TaskDataSource {
     try {
       await _db
           .collection('users')
-          .doc(uid)
+          .doc(authenticatedUser.uid)
           .collection('tasks')
           .doc(task.id)
           .update(task.toJson());
@@ -57,7 +57,7 @@ class TaskDataSource {
     try {
       await _db
           .collection('users')
-          .doc(uid)
+          .doc(authenticatedUser.uid)
           .collection('tasks')
           .doc(task.id)
           .delete();
@@ -73,7 +73,7 @@ class TaskDataSource {
       for (final task in tasks) {
         final docRef = _db
             .collection('users')
-            .doc(uid)
+            .doc(authenticatedUser.uid)
             .collection('tasks')
             .doc(task.id);
 

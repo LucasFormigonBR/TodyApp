@@ -50,6 +50,7 @@ dependencies:
   flashy_flushbar: ^1.4.0
   google_sign_in: ^7.1.1
   fpdart: ^1.1.1
+  package_info_plus: ^9.0.0
 
 dev_dependencies:
   flutter_test:
