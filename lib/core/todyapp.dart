@@ -65,7 +65,7 @@ class TodyApp extends StatelessWidget {
             enabledBorder: OutlineInputBorder(
               borderSide: BorderSide(
                 style: BorderStyle.solid,
-                color: StylesApp.greyText,
+                color: StylesApp.colorInputBorder,
               ),
             ),
           ),

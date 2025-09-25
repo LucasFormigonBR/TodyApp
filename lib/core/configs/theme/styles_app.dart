@@ -30,6 +30,9 @@ class StylesApp {
     );
   }
 
+  // Input Border
+  static const Color colorInputBorder = Color(0xFFE0E5ED);
+
   static TextStyle textButtonBold(BuildContext context) {
     return Theme.of(
       context,

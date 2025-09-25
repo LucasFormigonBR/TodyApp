@@ -6,6 +6,7 @@ import 'package:todyapp/presentation/home/cubit/profile/profile_cubit.dart';
 import 'package:todyapp/presentation/home/cubit/profile/profile_state.dart';
 
 import '../../../common/helpers/notification.dart';
+import '../../../common/widgets/appbar_widget.dart';
 import '../../../core/service_locator.dart';
 
 class ProfilePage extends StatelessWidget {
@@ -32,7 +33,7 @@ class ProfilePage extends StatelessWidget {
         }
       },
       child: Scaffold(
-        appBar: AppBar(title: Text("Configurações"), centerTitle: true),
+        appBar: AppBarWidget(title: Text('Configurações')),
         body: ListView(
           padding: EdgeInsets.symmetric(vertical: 16),
           shrinkWrap: true,
@@ -58,10 +59,9 @@ class ProfilePage extends StatelessWidget {
             _itemMenu(
               title: "Conta",
               icon: Icons.person,
-              onTap: () => print("Clicou"),
+              onTap: () => context.push('/account'),
             ),
             Divider(),
-
             _itemMenu(
               title: "Sobre TodyApp",
               icon: Icons.info_outline,
