@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:todyapp/core/service_locator.dart';
+import 'package:todyapp/presentation/home/pages/account_page.dart';
 import 'package:todyapp/presentation/home/pages/details_todyapp_page.dart';
 import 'package:todyapp/presentation/home/pages/current_page.dart';
 import 'package:todyapp/presentation/home/pages/inbox_page.dart';
+import 'package:todyapp/presentation/home/pages/profile_page.dart';
 import 'package:todyapp/presentation/login/pages/create_account_page.dart';
 import 'package:todyapp/presentation/login/pages/login_email_page.dart';
 import 'package:todyapp/presentation/login/pages/login_page.dart';
@@ -92,5 +94,7 @@ final goRouter = GoRouter(
         return CurrentPage(key: ValueKey(message), message: message);
       },
     ),
+    GoRoute(path: '/profile', builder: (context, state) => ProfilePage()),
+    GoRoute(path: '/account', builder: (context, state) => AccountPage()),
   ],
 );

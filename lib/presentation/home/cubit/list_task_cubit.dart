@@ -8,7 +8,7 @@ import 'package:todyapp/presentation/home/cubit/list_task_state.dart';
 
 import '../../../domain/usecases/task/get_all_tasks.dart';
 import '../../../domain/usecases/task/remove_multiple_tasks.dart';
-import '../../../domain/usecases/remove_task.dart';
+import '../../../domain/usecases/task/remove_task.dart';
 import '../../../domain/usecases/task/update_task.dart';
 
 class ListTaskCubit extends Cubit<ListTaskState> {

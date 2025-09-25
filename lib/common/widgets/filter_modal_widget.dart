@@ -29,10 +29,8 @@ class _FilterModalWidgetState extends State<FilterModalWidget> {
             child: RadioGroup(
               groupValue: filters,
               onChanged: (value) {
-                //setState(() {
                 filters = value ?? FilterTask.data;
                 context.read<TaskCubit>().selectFilterTask(filters!);
-                //});
               },
               child: Column(
                 mainAxisSize: MainAxisSize.min,
